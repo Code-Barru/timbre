@@ -17,10 +17,9 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
-		"auth:schema": "better-auth generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes"
+		"auth:schema": "npx --yes @better-auth/cli@latest generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes"
 	},
 	"devDependencies": {
-		"@better-auth/cli": "~1.4.21",
 		"@eslint/js": "^10.0.1",
 		"@inlang/paraglide-js": "^2.18.2",
 		"@sveltejs/adapter-auto": "^7.0.1",
@@ -29,7 +28,7 @@
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/vite": "^4.3.0",
 		"@types/node": "^24",
-		"better-auth": "~1.4.21",
+		"better-auth": "^1.6.23",
 		"drizzle-kit": "^0.31.10",
 		"drizzle-orm": "^0.45.2",
 		"eslint": "^10.4.1",
@@ -46,5 +45,14 @@
 		"typescript": "^6.0.3",
 		"typescript-eslint": "^8.60.1",
 		"vite": "^8.0.16"
+	},
+	"dependencies": {
+		"@lucide/svelte": "^1.24.0"
+	},
+	"overrides": {
+		"cookie": "^0.7.0",
+		"@esbuild-kit/core-utils": {
+			"esbuild": "^0.25.0"
+		}
 	}
 }
