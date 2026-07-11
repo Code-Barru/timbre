@@ -1,0 +1,266 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme="dark"] *, [data-theme="dark"], .dark *, .dark));
+
+@theme {
+  /* -------------------------------------------------------------- fonts -- */
+  --font-sans: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-ipa: 'Gentium Plus', 'Charis SIL', 'Doulos SIL', serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', monospace;
+
+  /* ---------------------------------------- neutral (violet-tinted gray) -- */
+  /* Overrides Tailwind's pure-gray neutral. Everything else comes from the   */
+  /* stock palette, so no other ramp is redefined here.                       */
+  --color-neutral-50: #f7f6fa;
+  --color-neutral-100: #f0eef5;
+  --color-neutral-200: #e4e2ec;
+  --color-neutral-300: #d2cfdd;
+  --color-neutral-400: #a8a4b6;
+  --color-neutral-500: #817d90;
+  --color-neutral-600: #6b6878;
+  --color-neutral-700: #4f4c5b;
+  --color-neutral-800: #312e3c;
+  --color-neutral-900: #1a1822;
+  --color-neutral-950: #121118;
+
+  /* ============================ SEMANTIC — light defaults ================= */
+  /* Re-point under [data-theme="dark"] below.                                */
+
+  --color-surface-sunken: var(--color-neutral-50);
+  --color-surface: #ffffff;
+  --color-surface-raised: #fbfbfe;
+  --color-border: var(--color-neutral-200);
+  --color-border-strong: var(--color-neutral-300);
+
+  --color-text: var(--color-neutral-900);
+  --color-text-muted: var(--color-neutral-600);
+  --color-text-faint: var(--color-neutral-500);
+  --color-text-inverse: #ffffff;
+
+  /* neutral chip + loading shimmer — re-pointed in dark so they never stay light */
+  --color-chip: var(--color-neutral-100);
+  --color-skeleton: var(--color-neutral-200);
+  --color-skeleton-hi: var(--color-neutral-100);
+
+  --color-primary: var(--color-violet-600);
+  --color-primary-hover: var(--color-violet-700);
+  --color-primary-active: var(--color-violet-800);
+  --color-primary-subtle: var(--color-violet-50);
+  --color-accent: var(--color-cyan-600);
+  --color-accent-subtle: var(--color-cyan-50);
+
+  /* status — the four semantic feedback colors */
+  --color-success: var(--color-green-600);
+  --color-success-subtle: var(--color-green-50);
+  --color-warning: var(--color-amber-600);
+  --color-warning-subtle: var(--color-amber-50);
+  --color-danger: var(--color-red-600);
+  --color-danger-subtle: var(--color-red-50);
+  --color-info: var(--color-blue-600);
+  --color-info-subtle: var(--color-blue-50);
+
+  /* grade — Anki ease ramp, aliases the status colors                        */
+  /* Again → danger · Hard → warning · Good → success · Easy → info           */
+  --color-grade-again: var(--color-danger);
+  --color-grade-again-subtle: var(--color-danger-subtle);
+  --color-grade-hard: var(--color-warning);
+  --color-grade-hard-subtle: var(--color-warning-subtle);
+  --color-grade-good: var(--color-success);
+  --color-grade-good-subtle: var(--color-success-subtle);
+  --color-grade-easy: var(--color-info);
+  --color-grade-easy-subtle: var(--color-info-subtle);
+
+  /* grammatical gender (m / ż / n) */
+  --color-gender-m: var(--color-sky-700);
+  --color-gender-m-subtle: var(--color-sky-100);
+  --color-gender-f: var(--color-pink-700);
+  --color-gender-f-subtle: var(--color-pink-100);
+  --color-gender-n: var(--color-green-700);
+  --color-gender-n-subtle: var(--color-green-100);
+
+  /* rotating tag palette (cases, aspect pairs, similarity groups) */
+  --color-tag-1: var(--color-violet-600);   --color-tag-1-subtle: var(--color-violet-50);
+  --color-tag-2: var(--color-cyan-700);     --color-tag-2-subtle: var(--color-cyan-50);
+  --color-tag-3: var(--color-amber-700);    --color-tag-3-subtle: var(--color-amber-100);
+  --color-tag-4: var(--color-pink-700);     --color-tag-4-subtle: var(--color-pink-100);
+  --color-tag-5: var(--color-green-700);    --color-tag-5-subtle: var(--color-green-100);
+  --color-tag-6: var(--color-blue-700);     --color-tag-6-subtle: var(--color-blue-100);
+  --color-tag-7: var(--color-orange-700);   --color-tag-7-subtle: var(--color-orange-100);
+  --color-tag-8: var(--color-fuchsia-700);  --color-tag-8-subtle: var(--color-fuchsia-100);
+
+  /* ============================ type scale =============================== */
+  --text-display: 3rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-display--font-weight: 800;
+
+  --text-h1: 2.25rem;
+  --text-h1--line-height: 1.1;
+  --text-h1--letter-spacing: -0.018em;
+  --text-h1--font-weight: 700;
+
+  --text-h2: 1.75rem;
+  --text-h2--line-height: 1.15;
+  --text-h2--letter-spacing: -0.012em;
+  --text-h2--font-weight: 700;
+
+  --text-h3: 1.375rem;
+  --text-h3--line-height: 1.25;
+  --text-h3--font-weight: 600;
+
+  --text-h4: 1.125rem;
+  --text-h4--line-height: 1.3;
+  --text-h4--font-weight: 600;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.55;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.4;
+
+  --text-label: 0.75rem;
+  --text-label--line-height: 1;
+  --text-label--letter-spacing: 0.08em;
+  --text-label--font-weight: 600;
+
+  --text-ipa: 1.0625rem;
+  --text-ipa--line-height: 1.3;
+  --text-ipa--letter-spacing: 0.01em;
+
+  /* ============================ radii =================================== */
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  /* ============================ elevation =============================== */
+  --shadow-sm: 0 1px 2px rgba(20, 18, 30, 0.06);
+  --shadow-md: 0 1px 3px rgba(20, 18, 30, 0.08), 0 1px 2px rgba(20, 18, 30, 0.06);
+  --shadow-lg: 0 4px 12px rgba(20, 18, 30, 0.08);
+  --shadow-xl: 0 12px 32px rgba(20, 18, 30, 0.12);
+
+  /* ============================ motion ================================== */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-card-flip: card-flip 320ms cubic-bezier(0.2, 0, 0, 1) forwards;
+  --animate-card-advance: card-advance 200ms cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-spin-fast: spin 0.7s linear infinite;
+  --animate-bar-slide: bar-slide 1.3s ease-in-out infinite;
+  --animate-shimmer: shimmer 1.4s ease-in-out infinite;
+  --animate-rec-pulse: rec-pulse 1s ease-in-out infinite;
+
+  /* ============================ z-index layers ========================== */
+  --z-index-base: 0;
+  --z-index-sticky: 100;
+  --z-index-overlay: 1000;
+  --z-index-modal: 1100;
+  --z-index-toast: 1200;
+}
+
+/* ============================================================================
+   Dark mode — re-point ONLY the semantic tokens.
+   ============================================================================ */
+[data-theme='dark'],
+.dark {
+  --color-surface-sunken: var(--color-neutral-950);
+  --color-surface: var(--color-neutral-900);
+  --color-surface-raised: #24222e;
+  --color-border: var(--color-neutral-800);
+  --color-border-strong: #423e50;
+
+  --color-text: #ecebf1;
+  --color-text-muted: var(--color-neutral-400);
+  --color-text-faint: var(--color-neutral-500);
+  --color-text-inverse: var(--color-neutral-900);
+
+  --color-chip: var(--color-neutral-800);
+  --color-skeleton: var(--color-neutral-800);
+  --color-skeleton-hi: var(--color-neutral-700);
+
+  /* Dark accents are blended ~20% toward neutral so they read calm on the      */
+  /* near-black surfaces instead of neon. `--dim` is the shared desaturator.     */
+  --dim: var(--color-neutral-500);
+  --color-primary: color-mix(in oklab, var(--color-violet-400) 80%, var(--dim));
+  --color-primary-hover: color-mix(in oklab, var(--color-violet-300) 82%, var(--dim));
+  --color-primary-active: color-mix(in oklab, var(--color-violet-500) 80%, var(--dim));
+  --color-primary-subtle: #241f30;
+  --color-accent: color-mix(in oklab, var(--color-cyan-400) 78%, var(--dim));
+  --color-accent-subtle: #15323790;
+
+  --color-success: color-mix(in oklab, var(--color-green-400) 78%, var(--dim));  --color-success-subtle: #172219;
+  --color-warning: color-mix(in oklab, var(--color-amber-400) 80%, var(--dim));  --color-warning-subtle: #251e14;
+  --color-danger: color-mix(in oklab, var(--color-red-400) 80%, var(--dim));     --color-danger-subtle: #251717;
+  --color-info: color-mix(in oklab, var(--color-blue-400) 80%, var(--dim));      --color-info-subtle: #161d2b;
+
+  --color-grade-again: var(--color-danger);   --color-grade-again-subtle: var(--color-danger-subtle);
+  --color-grade-hard: var(--color-warning);   --color-grade-hard-subtle: var(--color-warning-subtle);
+  --color-grade-good: var(--color-success);   --color-grade-good-subtle: var(--color-success-subtle);
+  --color-grade-easy: var(--color-info);      --color-grade-easy-subtle: var(--color-info-subtle);
+
+  --color-gender-m: color-mix(in oklab, var(--color-sky-400) 78%, var(--dim));    --color-gender-m-subtle: #10242e;
+  --color-gender-f: color-mix(in oklab, var(--color-pink-400) 78%, var(--dim));   --color-gender-f-subtle: #29161f;
+  --color-gender-n: color-mix(in oklab, var(--color-green-400) 78%, var(--dim));  --color-gender-n-subtle: #172219;
+
+  --color-tag-1: color-mix(in oklab, var(--color-violet-400) 78%, var(--dim));   --color-tag-1-subtle: #221d31;
+  --color-tag-2: color-mix(in oklab, var(--color-cyan-400) 76%, var(--dim));     --color-tag-2-subtle: #10262b;
+  --color-tag-3: color-mix(in oklab, var(--color-amber-400) 80%, var(--dim));    --color-tag-3-subtle: #251e14;
+  --color-tag-4: color-mix(in oklab, var(--color-pink-400) 78%, var(--dim));     --color-tag-4-subtle: #29161f;
+  --color-tag-5: color-mix(in oklab, var(--color-green-400) 78%, var(--dim));    --color-tag-5-subtle: #172219;
+  --color-tag-6: color-mix(in oklab, var(--color-blue-400) 78%, var(--dim));     --color-tag-6-subtle: #161d2b;
+  --color-tag-7: color-mix(in oklab, var(--color-orange-400) 80%, var(--dim));   --color-tag-7-subtle: #271a12;
+  --color-tag-8: color-mix(in oklab, var(--color-fuchsia-400) 78%, var(--dim));  --color-tag-8-subtle: #271430;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* ============================================================================
+   Keyframes + base
+   ============================================================================ */
+@keyframes card-flip {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(180deg); }
+}
+@keyframes card-advance {
+  from { transform: translateX(24px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+@keyframes bar-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.82); }
+}
+
+@layer base {
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background-color: var(--color-surface-sunken);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  :where(a, button, input, textarea, select, [tabindex]):focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-primary) 45%, transparent);
+    border-radius: var(--radius-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
