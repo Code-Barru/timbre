@@ -3,6 +3,7 @@ import { pgTable, pgEnum, text, timestamp, integer, real, bigserial, jsonb, inde
 import { user } from './auth.schema';
 
 export const cardTypeEnum = pgEnum('card_type', ['basic', 'cloze', 'minimal_pair']);
+export const cardStateEnum = pgEnum('card_state', ['new', 'learning', 'review', 'relearning']);
 export const reviewGradeEnum = pgEnum('review_grade', ['again', 'hard', 'good', 'easy']);
 
 export const deck = pgTable(
@@ -53,15 +54,17 @@ export const cardState = pgTable(
 			.primaryKey()
 			.references(() => card.id, { onDelete: 'cascade' }),
 		due: timestamp('due').defaultNow().notNull(),
-		interval: integer('interval').notNull().default(0),
-		easeFactor: real('ease_factor').notNull().default(2.5),
-		repetitions: integer('repetitions').notNull().default(0),
+		stability: real('stability').notNull().default(0),
+		difficulty: real('difficulty').notNull().default(0),
+		elapsed_days: integer('elapsed_days').notNull().default(0),
+		scheduled_days: integer('scheduled_days').notNull().default(0),
+		reps: integer('reps').notNull().default(0),
+		state: cardStateEnum('state').notNull().default('new'),
 		lapses: integer('lapses').notNull().default(0),
-		lastReviewedAt: timestamp('last_reviewed_at')
+		lastReviewedAt: timestamp('last_reviewed_at'),
 	},
 	(table) => [
-		index('card_state_due_idx').on(table.due),
-		index('card_state_repetitions_idx').on(table.repetitions)
+		index('card_state_due_idx').on(table.due)
 	]
 );
 
@@ -78,10 +81,12 @@ export const reviewLog = pgTable(
 			.references(() => deck.id, { onDelete: 'cascade' }),
 		reviewedAt: timestamp('reviewed_at').defaultNow().notNull(),
 		grade: reviewGradeEnum('grade').notNull(),
-		intervalBefore: integer('interval_before').notNull(),
-		intervalAfter: integer('interval_after').notNull(),
-		easeBefore: real('ease_before').notNull(),
-		easeAfter: real('ease_after').notNull()
+		difficultyBefore: real('difficulty_before').notNull(),
+		difficultyAfter: real('difficulty_after').notNull(),
+		scheduledDaysBefore: integer('scheduled_days_before').notNull(),
+		scheduledDaysAfter: integer('scheduled_days_after').notNull(),
+		stabilityBefore: real('stability_before').notNull(),
+		stabilityAfter: real('stability_after').notNull(),
 	},
 	(table) => [
 		index('review_log_card_idx').on(table.cardId),
