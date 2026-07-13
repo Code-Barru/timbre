@@ -5,7 +5,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { locales, localizeHref } from '$lib/paraglide/runtime';
-	import { House, ChartColumn, Settings, Folder, Play, LogOut, ChevronDown, User } from '@lucide/svelte';
+	import { House, ChartColumn, Settings, Play, LogOut, ChevronDown, User, Layers } from '@lucide/svelte';
 	import { SidebarNav, BottomNav, type NavItem } from '$lib/components/navigation';
 	import { Divider } from '$lib/components/primitives';
 	import { DropdownMenu } from '$lib/components/overlays';
@@ -20,13 +20,13 @@
 	let sidebarItems = $derived<NavItem[]>([
 		{ label: 'Home', icon: House, href: '/', active: path === '/' },
 		{ label: 'Review', icon: Play, href: '/review', active: path === '/review' },
-		{ label: 'Decks', icon: Folder, href: '/decks', active: path === '/decks' },
+		{ label: 'Decks', icon: Layers, href: '/decks', active: path === '/decks' },
 		{ label: 'Stats', icon: ChartColumn, href: '/stats', active: path === '/stats' },
 	]);
 
 	let bottomItems = $derived<NavItem[]>([
 		{ label: 'Home', icon: House, href: '/', active: path === '/' },
-		{ label: 'Decks', icon: Folder, href: '/decks', active: path === '/decks' },
+		{ label: 'Decks', icon: Layers, href: '/decks', active: path === '/decks' },
 		{ label: 'Stats', icon: ChartColumn, href: '/stats', active: path === '/stats' },
 		{ label: 'Settings', icon: Settings, href: '/settings', active: path === '/settings' }
 	]);
