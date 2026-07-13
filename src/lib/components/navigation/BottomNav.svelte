@@ -17,14 +17,14 @@
 </script>
 
 <nav
-	class="flex items-center justify-around rounded-xl border border-border bg-surface px-2 py-2.5 shadow-md {className}"
+	class="flex items-center justify-around rounded-xl w-6/7 mx-auto border border-border bg-surface px-2 py-2.5 shadow-md {className}"
 >
 	{#snippet navItem(item: NavItem)}
 		{@const Icon = item.icon}
 		{#if item.href}
 			<a
 				href={item.href}
-				class="flex flex-col items-center gap-[3px] {item.active ? 'text-primary' : 'text-text-faint'}"
+				class="flex flex-col items-center gap-1 {item.active ? 'text-primary' : 'text-text-faint'}"
 				aria-current={item.active ? 'page' : undefined}
 			>
 				<Icon size={21} />
@@ -34,7 +34,7 @@
 			<button
 				type="button"
 				onclick={item.onclick}
-				class="flex flex-col items-center gap-[3px] {item.active ? 'text-primary' : 'text-text-faint'}"
+				class="flex flex-col items-center gap-1 {item.active ? 'text-primary' : 'text-text-faint'}"
 				aria-current={item.active ? 'page' : undefined}
 			>
 				<Icon size={21} />

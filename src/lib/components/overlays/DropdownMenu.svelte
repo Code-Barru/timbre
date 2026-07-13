@@ -52,7 +52,7 @@
 
 <svelte:window on:keydown={open ? onkeydown : undefined} />
 
-<div bind:this={root} class="relative inline-block">
+<div bind:this={root} class="relative block w-full">
 	<!-- svelte-ignore a11y_click_events_have_key_events -->
 	<div onclick={toggle} role="button" tabindex="-1">
 		{@render trigger()}
@@ -60,7 +60,7 @@
 
 	{#if open}
 		<div
-			class="absolute right-0 top-full z-10 mt-2 min-w-[230px] rounded-lg border border-border bg-surface p-1.5 shadow-xl {className}"
+			class="absolute left-0 bottom-full z-10 mb-2 min-w-[230px] rounded-lg border border-border bg-surface p-1.5 shadow-xl {className}"
 			role="menu"
 			transition:scale={{ duration: 140, start: 0.96, opacity: 0 }}
 		>
