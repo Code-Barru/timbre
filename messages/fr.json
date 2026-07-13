@@ -1,4 +1,31 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from fr!"
+	"hello_world": "Salut, {name} depuis le fr!",
+
+	"auth_email_label": "Email",
+	"auth_password_label": "Mot de passe",
+	"auth_error_generic": "Une erreur est survenue. Réessayez.",
+	"auth_email_invalid": "Entrez une adresse email valide.",
+	"auth_password_invalid": "Le mot de passe doit contenir au moins 8 caractères, une lettre et un chiffre.",
+
+	"home_greeting": "Bonjour, {name} !",
+
+	"sign_in_title": "Connexion",
+	"sign_in_submit": "Se connecter",
+	"sign_in_no_account": "Pas encore de compte ?",
+	"sign_in_link_sign_up": "S'inscrire",
+
+	"sign_up_title": "Créer un compte",
+	"sign_up_name_label": "Nom",
+	"sign_up_name_invalid": "Entrez un nom valide.",
+	"sign_up_confirm_password_label": "Confirmer le mot de passe",
+	"sign_up_password_mismatch": "Les mots de passe ne correspondent pas.",
+	"sign_up_submit": "S'inscrire",
+	"sign_up_have_account": "Déjà un compte ?",
+	"sign_up_link_sign_in": "Se connecter",
+
+	"sign_out_title": "Déconnexion",
+	"sign_out_confirm": "Voulez-vous vraiment vous déconnecter ?",
+	"sign_out_submit": "Se déconnecter",
+	"sign_out_cancel": "Annuler"
 }

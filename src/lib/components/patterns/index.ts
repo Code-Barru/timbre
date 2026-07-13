@@ -10,3 +10,4 @@ export { default as QueueCounter } from './QueueCounter.svelte';
 export { default as StreakIndicator } from './StreakIndicator.svelte';
 export { default as EmptyState } from './EmptyState.svelte';
 export { default as AudioPlayer } from './AudioPlayer.svelte';
+export { default as LangSwitcher } from './LangSwitcher.svelte';

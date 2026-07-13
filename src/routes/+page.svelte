@@ -1,2 +1,15 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script lang="ts">
+	import { resolve } from '$app/paths';
+	import { Button } from '$lib/components/primitives';
+	import { m } from '$lib/paraglide/messages.js';
+	import type { PageServerData } from './$types';
+
+	let { data }: { data: PageServerData } = $props();
+</script>
+
+<div class="flex min-h-screen items-center justify-center px-4">
+	<div class="flex flex-col items-center gap-4">
+		<h1 class="text-h1 text-text">{m.home_greeting({ name: data.user.name })}</h1>
+		<Button href={resolve('/sign-out')} variant="secondary">{m.sign_out_submit()}</Button>
+	</div>
+</div>
