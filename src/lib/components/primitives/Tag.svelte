@@ -48,7 +48,9 @@
 		{@render children()}
 	</button>
 {:else}
-	<span class="{base} {palette[color]} {removable ? 'py-1 pr-2 pl-2.5' : 'px-2.5 py-1'} {className}">
+	<span
+		class="{base} {palette[color]} {removable ? 'py-1 pr-2 pl-2.5' : 'px-2.5 py-1'} {className}"
+	>
 		{@render children()}
 		{#if removable}
 			<button

@@ -11,13 +11,7 @@
 		audioSrc?: string;
 		class?: string;
 	}
-	let {
-		word,
-		ipa,
-		state = 'default',
-		onclick,
-		class: className = ''
-	}: Props = $props();
+	let { word, ipa, state = 'default', onclick, class: className = '' }: Props = $props();
 
 	// Static class maps so Tailwind keeps them at build time.
 	const tile: Record<State, string> = {

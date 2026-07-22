@@ -25,7 +25,8 @@
 		{/if}
 		<span class="inline-flex items-center gap-1.5 px-4 py-2 text-caption font-semibold {seg.text}">
 			<span class="h-2 w-2 flex-none rounded-full {seg.dot}"></span>
-			{seg.count} {seg.label}
+			{seg.count}
+			{seg.label}
 		</span>
 	{/each}
 </div>

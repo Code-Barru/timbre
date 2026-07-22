@@ -26,7 +26,9 @@
 
 <div class={className}>
 	<div class="text-[22px] leading-relaxed font-medium text-text">
-		{before}{#if revealed}<span class="rounded-md bg-success-subtle px-2.5 py-0.5 font-bold text-success">{answer}</span>{:else}<span
+		{before}{#if revealed}<span
+				class="rounded-md bg-success-subtle px-2.5 py-0.5 font-bold text-success">{answer}</span
+			>{:else}<span
 				class="inline-flex min-w-[78px] items-center justify-center rounded-t-md border-b-2 border-primary bg-primary-subtle px-3 py-0.5 font-bold text-primary"
 				>?</span
 			>{/if}{after}
@@ -35,9 +37,9 @@
 	{#if revealed}
 		{#if ipa || gloss}
 			<div class="mt-2 font-ipa text-base text-text-muted">
-				{#if ipa}<span class="font-ipa">{ipa}</span>{/if}{#if ipa && gloss} — {/if}{#if gloss}<span
-						class="font-sans">{gloss}</span
-					>{/if}
+				{#if ipa}<span class="font-ipa">{ipa}</span>{/if}{#if ipa && gloss}
+					—
+				{/if}{#if gloss}<span class="font-sans">{gloss}</span>{/if}
 			</div>
 		{/if}
 	{:else if hint}

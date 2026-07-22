@@ -27,14 +27,7 @@
 		? 'cursor-not-allowed text-text-faint'
 		: 'text-text'} {className}"
 >
-	<input
-		type="checkbox"
-		bind:checked
-		{indeterminate}
-		{disabled}
-		class="sr-only"
-		{...rest}
-	/>
+	<input type="checkbox" bind:checked {indeterminate} {disabled} class="sr-only" {...rest} />
 	<span
 		class="flex h-5 w-5 flex-none items-center justify-center rounded-md border transition {on &&
 		!disabled

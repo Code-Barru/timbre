@@ -8,8 +8,13 @@
 		tone?: Tone;
 		class?: string;
 	}
-	let { value = 0, max = 100, indeterminate = false, tone = 'primary', class: className = '' }: Props =
-		$props();
+	let {
+		value = 0,
+		max = 100,
+		indeterminate = false,
+		tone = 'primary',
+		class: className = ''
+	}: Props = $props();
 
 	const tones: Record<Tone, string> = {
 		primary: 'bg-primary',

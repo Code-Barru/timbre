@@ -10,12 +10,7 @@
 		children: Snippet;
 		class?: string;
 	}
-	let {
-		label,
-		placement = 'top',
-		children,
-		class: className = ''
-	}: Props = $props();
+	let { label, placement = 'top', children, class: className = '' }: Props = $props();
 
 	let visible = $state(false);
 

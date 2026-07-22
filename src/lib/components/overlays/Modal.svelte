@@ -82,7 +82,9 @@
 	>
 		<div
 			bind:this={panel}
-			class="w-full {sizes[size]} overflow-hidden rounded-lg bg-surface shadow-xl outline-none {className}"
+			class="w-full {sizes[
+				size
+			]} overflow-hidden rounded-lg bg-surface shadow-xl outline-none {className}"
 			role="dialog"
 			aria-modal="true"
 			aria-label={title}

@@ -5,11 +5,20 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { locales, localizeHref } from '$lib/paraglide/runtime';
-	import { House, ChartColumn, Settings, Play, LogOut, ChevronDown, User, Layers } from '@lucide/svelte';
+	import {
+		House,
+		ChartColumn,
+		Settings,
+		Play,
+		LogOut,
+		ChevronDown,
+		User,
+		Layers
+	} from '@lucide/svelte';
 	import { SidebarNav, BottomNav, type NavItem } from '$lib/components/navigation';
 	import { Divider } from '$lib/components/primitives';
 	import { DropdownMenu } from '$lib/components/overlays';
-	import '../../app.css'
+	import '../../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import type { LayoutServerData } from './$types';
 
@@ -21,7 +30,7 @@
 		{ label: 'Home', icon: House, href: '/', active: path === '/' },
 		{ label: 'Review', icon: Play, href: '/review', active: path === '/review' },
 		{ label: 'Decks', icon: Layers, href: '/decks', active: path === '/decks' },
-		{ label: 'Stats', icon: ChartColumn, href: '/stats', active: path === '/stats' },
+		{ label: 'Stats', icon: ChartColumn, href: '/stats', active: path === '/stats' }
 	]);
 
 	let bottomItems = $derived<NavItem[]>([
@@ -39,7 +48,13 @@
 
 	const userMenuItems = [
 		{ label: 'Settings', icon: Settings, onselect: () => goto('/settings') },
-		{ label: 'Sign out', icon: LogOut, danger: true, separator: true, onselect: () => goto('/sign-out') }
+		{
+			label: 'Sign out',
+			icon: LogOut,
+			danger: true,
+			separator: true,
+			onselect: () => goto('/sign-out')
+		}
 	];
 </script>
 
@@ -57,11 +72,15 @@
 					<div
 						class="flex w-full items-center gap-2.5 rounded-md px-[11px] py-[9px] text-sm font-semibold text-text-muted transition hover:bg-surface-sunken"
 					>
-            <User size={18} />
-						<span class="min-w-0 flex-1 truncate text-left" title={data.user.name}>{displayName}</span>
+						<User size={18} />
+						<span class="min-w-0 flex-1 truncate text-left" title={data.user.name}
+							>{displayName}</span
+						>
 						<ChevronDown
 							size={14}
-							class="flex-none text-text-faint transition-transform {userMenuOpen ? 'rotate-180' : ''}"
+							class="flex-none text-text-faint transition-transform {userMenuOpen
+								? 'rotate-180'
+								: ''}"
 						/>
 					</div>
 				{/snippet}

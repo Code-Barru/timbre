@@ -18,9 +18,15 @@
 	let track = $state('reference');
 
 	// Decorative waveforms — fixed bar heights.
-	const waveRef = [6, 11, 17, 23, 18, 12, 25, 29, 21, 14, 9, 17, 23, 27, 19, 12, 8, 15, 21, 25, 16, 10];
-	const waveYou = [8, 13, 19, 17, 12, 22, 27, 24, 16, 10, 14, 20, 26, 22, 15, 9, 12, 18, 24, 19, 11, 7];
-	const waveLive = [10, 18, 26, 34, 28, 20, 32, 38, 30, 22, 14, 24, 33, 37, 29, 18, 12, 20, 28, 36, 26, 16, 10, 22];
+	const waveRef = [
+		6, 11, 17, 23, 18, 12, 25, 29, 21, 14, 9, 17, 23, 27, 19, 12, 8, 15, 21, 25, 16, 10
+	];
+	const waveYou = [
+		8, 13, 19, 17, 12, 22, 27, 24, 16, 10, 14, 20, 26, 22, 15, 9, 12, 18, 24, 19, 11, 7
+	];
+	const waveLive = [
+		10, 18, 26, 34, 28, 20, 32, 38, 30, 22, 14, 24, 33, 37, 29, 18, 12, 20, 28, 36, 26, 16, 10, 22
+	];
 
 	let mediaRecorder: MediaRecorder | null = null;
 	let stream: MediaStream | null = null;
@@ -194,12 +200,7 @@
 
 			<!-- You row -->
 			<div class="flex items-center gap-3 border-t border-border py-2.5">
-				<IconButton
-					label="Play your recording"
-					variant="primary"
-					size="sm"
-					class="rounded-full"
-				>
+				<IconButton label="Play your recording" variant="primary" size="sm" class="rounded-full">
 					<Play size={15} />
 				</IconButton>
 				<span class="w-16 flex-none text-caption font-semibold text-text">You</span>

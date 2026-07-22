@@ -1,5 +1,15 @@
 import { relations } from 'drizzle-orm';
-import { pgTable, pgEnum, text, timestamp, integer, real, bigserial, jsonb, index } from 'drizzle-orm/pg-core';
+import {
+	pgTable,
+	pgEnum,
+	text,
+	timestamp,
+	integer,
+	real,
+	bigserial,
+	jsonb,
+	index
+} from 'drizzle-orm/pg-core';
 import { user } from './auth.schema';
 
 export const cardTypeEnum = pgEnum('card_type', ['basic', 'cloze', 'minimal_pair']);

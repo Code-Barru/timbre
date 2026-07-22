@@ -9,10 +9,31 @@
 	}
 	let { value, variant = 'pill', class: className = '' }: Props = $props();
 
-	const data: Record<Value, { bg: string; text: string; dot: string; label: string; letter: string }> = {
-		m: { bg: 'bg-gender-m-subtle', text: 'text-gender-m', dot: 'bg-gender-m', label: 'męski', letter: 'm' },
-		f: { bg: 'bg-gender-f-subtle', text: 'text-gender-f', dot: 'bg-gender-f', label: 'żeński', letter: 'ż' },
-		n: { bg: 'bg-gender-n-subtle', text: 'text-gender-n', dot: 'bg-gender-n', label: 'nijaki', letter: 'n' }
+	const data: Record<
+		Value,
+		{ bg: string; text: string; dot: string; label: string; letter: string }
+	> = {
+		m: {
+			bg: 'bg-gender-m-subtle',
+			text: 'text-gender-m',
+			dot: 'bg-gender-m',
+			label: 'męski',
+			letter: 'm'
+		},
+		f: {
+			bg: 'bg-gender-f-subtle',
+			text: 'text-gender-f',
+			dot: 'bg-gender-f',
+			label: 'żeński',
+			letter: 'ż'
+		},
+		n: {
+			bg: 'bg-gender-n-subtle',
+			text: 'text-gender-n',
+			dot: 'bg-gender-n',
+			label: 'nijaki',
+			letter: 'n'
+		}
 	};
 	let d = $derived(data[value]);
 </script>

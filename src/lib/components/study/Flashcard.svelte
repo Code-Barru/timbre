@@ -46,8 +46,7 @@
 	};
 	let chipTone = $derived(gender ? mnemonicTone[gender] : 'primary');
 
-	const hatch =
-		'repeating-linear-gradient(45deg,#ECEAF2,#ECEAF2 8px,#F5F4F8 8px,#F5F4F8 16px)';
+	const hatch = 'repeating-linear-gradient(45deg,#ECEAF2,#ECEAF2 8px,#F5F4F8 8px,#F5F4F8 16px)';
 
 	function toggle() {
 		flipped = !flipped;
@@ -93,11 +92,7 @@
 			</div>
 
 			{#if image}
-				<img
-					src={image}
-					alt="meaning"
-					class="min-h-0 flex-1 rounded-md object-cover"
-				/>
+				<img src={image} alt="meaning" class="min-h-0 flex-1 rounded-md object-cover" />
 			{:else}
 				<div
 					class="flex min-h-0 flex-1 items-center justify-center rounded-md"
@@ -115,8 +110,7 @@
 			</div>
 			<div class="mt-1.5 text-center text-caption font-medium text-text-faint">
 				press
-				<span
-					class="rounded border border-border bg-surface-sunken px-1.5 py-px font-mono text-xs"
+				<span class="rounded border border-border bg-surface-sunken px-1.5 py-px font-mono text-xs"
 					>Space</span
 				> to flip
 			</div>

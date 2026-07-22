@@ -24,9 +24,7 @@
 	</div>
 	<div class="ml-1.5 flex gap-1.5">
 		{#each week as studied, i (i)}
-			<span
-				class="h-3.5 w-3.5 rounded-sm {studied ? 'bg-warning' : 'bg-chip'}"
-			></span>
+			<span class="h-3.5 w-3.5 rounded-sm {studied ? 'bg-warning' : 'bg-chip'}"></span>
 		{/each}
 	</div>
 </div>

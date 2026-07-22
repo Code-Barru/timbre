@@ -23,5 +23,10 @@
 	let borderCls = $derived(invalid ? 'border-danger' : 'border-border-strong');
 </script>
 
-<textarea {rows} {placeholder} {disabled} bind:value class="{base} {borderCls} {className}" {...rest}
-></textarea>
+<textarea
+	{rows}
+	{placeholder}
+	{disabled}
+	bind:value
+	class="{base} {borderCls} {className}"
+	{...rest}></textarea>

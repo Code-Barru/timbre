@@ -33,7 +33,8 @@
 
 	const variants: Record<Variant, string> = {
 		primary: 'bg-primary text-text-inverse hover:bg-primary-hover active:bg-primary-active',
-		secondary: 'bg-surface text-text border border-border-strong hover:bg-surface-sunken active:bg-chip',
+		secondary:
+			'bg-surface text-text border border-border-strong hover:bg-surface-sunken active:bg-chip',
 		ghost: 'bg-transparent text-primary hover:bg-primary-subtle active:bg-primary-subtle',
 		destructive: 'bg-danger text-text-inverse hover:brightness-90 active:brightness-95'
 	};

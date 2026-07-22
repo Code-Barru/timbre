@@ -69,7 +69,7 @@
 		variant="primary"
 		class="rounded-full"
 		onclick={toggle}
-		disabled={disabled}
+		{disabled}
 	>
 		{#if playing}<Pause size={18} />{:else}<Play size={18} />{/if}
 	</IconButton>
@@ -82,12 +82,9 @@
 				: 'cursor-pointer'}"
 			aria-label="Seek"
 			onclick={seek}
-			disabled={disabled}
+			{disabled}
 		>
-			<span
-				class="absolute left-0 top-0 h-1.5 rounded-full bg-primary"
-				style="width:{pct}%"
-			></span>
+			<span class="absolute left-0 top-0 h-1.5 rounded-full bg-primary" style="width:{pct}%"></span>
 			<span
 				class="absolute top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-primary bg-surface"
 				style="left:{pct}%"
@@ -105,7 +102,7 @@
 			? 'cursor-default opacity-60'
 			: 'cursor-pointer'}"
 		onclick={cycleRate}
-		disabled={disabled}
+		{disabled}
 	>
 		{rate}×
 	</button>

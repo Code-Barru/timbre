@@ -33,11 +33,23 @@
 		? 'opacity-50'
 		: ''} {className}"
 >
-	<button type="button" aria-label="Decrease" onclick={() => bump(-1)} disabled={disabled || atMin} class={btn}>
+	<button
+		type="button"
+		aria-label="Decrease"
+		onclick={() => bump(-1)}
+		disabled={disabled || atMin}
+		class={btn}
+	>
 		<Minus size={16} />
 	</button>
 	<span class="w-14 text-center font-mono text-[15px] font-semibold text-text">{value}</span>
-	<button type="button" aria-label="Increase" onclick={() => bump(1)} disabled={disabled || atMax} class={btn}>
+	<button
+		type="button"
+		aria-label="Increase"
+		onclick={() => bump(1)}
+		disabled={disabled || atMax}
+		class={btn}
+	>
 		<Plus size={16} />
 	</button>
 </div>

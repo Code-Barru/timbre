@@ -18,12 +18,7 @@
 		items: MenuItem[];
 		class?: string;
 	}
-	let {
-		open = $bindable(false),
-		trigger,
-		items,
-		class: className = ''
-	}: Props = $props();
+	let { open = $bindable(false), trigger, items, class: className = '' }: Props = $props();
 
 	let root = $state<HTMLDivElement | null>(null);
 

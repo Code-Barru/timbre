@@ -26,9 +26,7 @@
 	}: Props = $props();
 </script>
 
-<div
-	class="flex overflow-hidden rounded-lg border border-border bg-surface {className}"
->
+<div class="flex overflow-hidden rounded-lg border border-border bg-surface {className}">
 	<SidebarNav {items} {brand} footer={sidebarFooter} />
 
 	<div class="flex min-w-0 flex-1 flex-col">

@@ -13,7 +13,9 @@ function isValidNameChar(char: string): boolean {
 }
 
 function isValidName(name: string): boolean {
-	return name.length > 0 && !name.includes('  ') && isLetter(name[0]) && [...name].every(isValidNameChar);
+	return (
+		name.length > 0 && !name.includes('  ') && isLetter(name[0]) && [...name].every(isValidNameChar)
+	);
 }
 
 const email = z.email('auth_email_invalid');
@@ -21,7 +23,10 @@ const email = z.email('auth_email_invalid');
 const password = z
 	.string()
 	.min(8, 'auth_password_invalid')
-	.refine((value) => [...value].some(isLetter) && [...value].some(isDigit), 'auth_password_invalid');
+	.refine(
+		(value) => [...value].some(isLetter) && [...value].some(isDigit),
+		'auth_password_invalid'
+	);
 
 const name = z
 	.string()

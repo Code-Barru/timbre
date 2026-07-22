@@ -38,7 +38,14 @@
 
 <div class="relative inline-flex {className}" style="width:{size}px;height:{size}px">
 	<svg width={size} height={size} viewBox="0 0 {size} {size}" class="-rotate-90">
-		<circle cx={size / 2} cy={size / 2} {r} fill="none" stroke-width={stroke} class="stroke-border" />
+		<circle
+			cx={size / 2}
+			cy={size / 2}
+			{r}
+			fill="none"
+			stroke-width={stroke}
+			class="stroke-border"
+		/>
 		<circle
 			cx={size / 2}
 			cy={size / 2}

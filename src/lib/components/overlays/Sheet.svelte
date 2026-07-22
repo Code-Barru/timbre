@@ -51,10 +51,7 @@
 		aria-hidden="true"
 	></div>
 
-	<div
-		class="fixed inset-x-0 bottom-0 flex justify-center"
-		style="z-index:var(--z-index-modal)"
-	>
+	<div class="fixed inset-x-0 bottom-0 flex justify-center" style="z-index:var(--z-index-modal)">
 		<div
 			class="w-full max-w-[540px] rounded-t-xl bg-surface px-4.5 pt-4 pb-6 shadow-xl {className}"
 			role="dialog"

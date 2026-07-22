@@ -40,9 +40,7 @@
 		return () => window.removeEventListener('click', onWindowClick);
 	});
 
-	let posCls = $derived(
-		placement === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'
-	);
+	let posCls = $derived(placement === 'top' ? 'bottom-full mb-2' : 'top-full mt-2');
 </script>
 
 <svelte:window on:keydown={open ? onkeydown : undefined} />

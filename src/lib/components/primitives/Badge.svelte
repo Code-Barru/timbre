@@ -12,8 +12,13 @@
 		children: Snippet;
 		class?: string;
 	}
-	let { variant = 'neutral', solid = false, dot = false, children, class: className = '' }: Props =
-		$props();
+	let {
+		variant = 'neutral',
+		solid = false,
+		dot = false,
+		children,
+		class: className = ''
+	}: Props = $props();
 
 	const soft: Record<Variant, string> = {
 		neutral: 'bg-chip text-text-muted',
