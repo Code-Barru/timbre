@@ -1,10 +1,11 @@
 <script lang="ts">
+	import type { LucideIcon } from '@lucide/svelte';
 	import type { NavItem } from './SidebarNav.svelte';
 
 	interface Props {
 		items: NavItem[];
 		/** When set, a raised primary FAB is placed at the centre of the bar. */
-		fabIcon?: any;
+		fabIcon?: LucideIcon;
 		fabLabel?: string;
 		onfab?: () => void;
 		class?: string;

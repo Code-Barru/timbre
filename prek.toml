@@ -1,0 +1,89 @@
+#:schema https://www.schemastore.org/prek.json
+minimum_prek_version = "0.4.0"
+
+[[repos]]
+repo = "builtin"
+hooks = [
+    { id = "trailing-whitespace", exclude = "^(package-lock\\.json|drizzle/)", stages = ["pre-commit"] },
+    { id = "end-of-file-fixer", exclude = "^(package-lock\\.json|drizzle/)", stages = ["pre-commit"] },
+    { id = "mixed-line-ending", args = ["--fix=lf"], stages = ["pre-commit"] },
+    { id = "check-merge-conflict", stages = ["pre-commit"] },
+    { id = "check-case-conflict", stages = ["pre-commit"] },
+    { id = "check-added-large-files", args = ["--maxkb=512"], stages = ["pre-commit"] },
+    { id = "check-json", exclude = "^tsconfig\\.json$", stages = ["pre-commit"] },
+    { id = "check-json5", files = "^tsconfig\\.json$", types = ["file"], stages = ["pre-commit"] },
+    { id = "check-toml", stages = ["pre-commit"] },
+    { id = "check-yaml", stages = ["pre-commit"] },
+    { id = "detect-private-key", stages = ["pre-commit"] },
+]
+
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "prettier"
+name = "prettier --write"
+language = "system"
+entry = "npx prettier --write --ignore-unknown"
+types_or = ["ts", "javascript", "svelte", "json", "css", "markdown", "html"]
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "eslint"
+name = "eslint --fix (staged)"
+language = "system"
+entry = "npx eslint --fix --no-warn-ignored"
+types_or = ["ts", "javascript", "svelte"]
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "forbid-env-files"
+name = "forbid .env files in git"
+language = "fail"
+entry = "Ne commite pas de fichier d'environnement. Utilise .env.example."
+files = "(^|/)\\.env($|\\.)"
+exclude = "(^|/)\\.env\\.(example|test)$"
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "i18n-parity"
+name = "i18n parity (messages/*.json)"
+language = "system"
+entry = "node scripts/check-i18n-parity.mjs"
+files = "^messages/.*\\.json$"
+pass_filenames = false
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "drizzle-migration"
+name = "drizzle schema modified without migration"
+language = "system"
+entry = "node scripts/check-drizzle-migration.mjs"
+files = "^src/lib/server/db/.*\\.schema\\.ts$"
+pass_filenames = false
+stages = ["pre-commit"]
+
+[[repos.hooks]]
+id = "conventional-commit"
+name = "conventional commit message"
+language = "system"
+entry = "node scripts/check-commit-msg.mjs"
+stages = ["commit-msg"]
+
+[[repos.hooks]]
+id = "svelte-check"
+name = "svelte-check (whole project)"
+language = "system"
+entry = "npm run check"
+pass_filenames = false
+always_run = true
+stages = ["pre-push"]
+
+[[repos.hooks]]
+id = "eslint-all"
+name = "eslint (whole project)"
+language = "system"
+entry = "npx eslint ."
+pass_filenames = false
+always_run = true
+stages = ["pre-push"]

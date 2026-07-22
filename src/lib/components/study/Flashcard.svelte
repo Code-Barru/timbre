@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Play, Sparkles, Tag as TagIcon } from '@lucide/svelte';
+	import { Play, Tag as TagIcon } from '@lucide/svelte';
 	import GenderBadge from '$lib/components/patterns/GenderBadge.svelte';
 	import MnemonicChip from '$lib/components/patterns/MnemonicChip.svelte';
 	import Tag from '$lib/components/primitives/Tag.svelte';

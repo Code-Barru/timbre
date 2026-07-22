@@ -8,7 +8,6 @@
 		ipa?: string;
 		state?: State;
 		onclick?: () => void;
-		audioSrc?: string;
 		class?: string;
 	}
 	let { word, ipa, state = 'default', onclick, class: className = '' }: Props = $props();

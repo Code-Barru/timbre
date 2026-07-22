@@ -1,8 +1,12 @@
 <script module lang="ts">
+	import type { LucideIcon } from '@lucide/svelte';
+	import type { ResolvedPathname } from '$app/types';
+
 	export type NavItem = {
 		label: string;
-		icon: any;
-		href?: string;
+		icon: LucideIcon;
+		/** Already resolved by the caller — pass `resolve('/decks')`, not `'/decks'`. */
+		href?: ResolvedPathname;
 		badge?: string | number;
 		active?: boolean;
 		onclick?: () => void;
@@ -46,6 +50,7 @@
 		{#each items as item (item.label)}
 			{@const Icon = item.icon}
 			{#if item.href}
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- NavItem.href is typed ResolvedPathname -->
 				<a
 					href={item.href}
 					class="flex items-center gap-[11px] rounded-md px-[11px] py-[9px] text-sm font-semibold transition {item.active

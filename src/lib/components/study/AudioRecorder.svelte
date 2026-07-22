@@ -7,11 +7,10 @@
 	type State = 'idle' | 'recording' | 'recorded';
 
 	interface Props {
-		referenceSrc?: string;
 		onrecorded?: (blob: Blob) => void;
 		class?: string;
 	}
-	let { referenceSrc, onrecorded, class: className = '' }: Props = $props();
+	let { onrecorded, class: className = '' }: Props = $props();
 
 	let mode = $state<State>('idle');
 	let elapsed = $state(0); // seconds

@@ -27,17 +27,17 @@
 	let path: string = $derived(page.url.pathname);
 
 	let sidebarItems = $derived<NavItem[]>([
-		{ label: 'Home', icon: House, href: '/', active: path === '/' },
-		{ label: 'Review', icon: Play, href: '/review', active: path === '/review' },
-		{ label: 'Decks', icon: Layers, href: '/decks', active: path === '/decks' },
-		{ label: 'Stats', icon: ChartColumn, href: '/stats', active: path === '/stats' }
+		{ label: 'Home', icon: House, href: resolve('/'), active: path === '/' },
+		{ label: 'Review', icon: Play, href: resolve('/review'), active: path === '/review' },
+		{ label: 'Decks', icon: Layers, href: resolve('/decks'), active: path === '/decks' },
+		{ label: 'Stats', icon: ChartColumn, href: resolve('/stats'), active: path === '/stats' }
 	]);
 
 	let bottomItems = $derived<NavItem[]>([
-		{ label: 'Home', icon: House, href: '/', active: path === '/' },
-		{ label: 'Decks', icon: Layers, href: '/decks', active: path === '/decks' },
-		{ label: 'Stats', icon: ChartColumn, href: '/stats', active: path === '/stats' },
-		{ label: 'Settings', icon: Settings, href: '/settings', active: path === '/settings' }
+		{ label: 'Home', icon: House, href: resolve('/'), active: path === '/' },
+		{ label: 'Decks', icon: Layers, href: resolve('/decks'), active: path === '/decks' },
+		{ label: 'Stats', icon: ChartColumn, href: resolve('/stats'), active: path === '/stats' },
+		{ label: 'Settings', icon: Settings, href: resolve('/settings'), active: path === '/settings' }
 	]);
 
 	let userMenuOpen = $state(false);
@@ -47,13 +47,13 @@
 	);
 
 	const userMenuItems = [
-		{ label: 'Settings', icon: Settings, onselect: () => goto('/settings') },
+		{ label: 'Settings', icon: Settings, onselect: () => goto(resolve('/settings')) },
 		{
 			label: 'Sign out',
 			icon: LogOut,
 			danger: true,
 			separator: true,
-			onselect: () => goto('/sign-out')
+			onselect: () => goto(resolve('/sign-out'))
 		}
 	];
 </script>
@@ -93,7 +93,12 @@
 	</main>
 
 	<div class="fixed inset-x-0 bottom-0 p-2 md:hidden">
-		<BottomNav items={bottomItems} fabIcon={Play} fabLabel="Review" onfab={() => goto('/review')} />
+		<BottomNav
+			items={bottomItems}
+			fabIcon={Play}
+			fabLabel="Review"
+			onfab={() => goto(resolve('/review'))}
+		/>
 	</div>
 </div>
 

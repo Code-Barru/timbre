@@ -17,6 +17,8 @@
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
 		"db:studio": "drizzle-kit studio",
+		"hooks:install": "prek install -t pre-commit -t pre-push -t commit-msg",
+		"hooks:run": "prek run --all-files",
 		"auth:schema": "npx --yes @better-auth/cli@latest generate --config src/lib/server/auth.ts --output src/lib/server/db/auth.schema.ts --yes"
 	},
 	"devDependencies": {

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ResolvedPathname } from '$app/types';
 	import Spinner from './Spinner.svelte';
 
 	type Variant = 'primary' | 'secondary' | 'ghost' | 'destructive';
@@ -10,8 +11,8 @@
 		size?: Size;
 		loading?: boolean;
 		disabled?: boolean;
-		/** Render as an anchor instead of a button. */
-		href?: string;
+		/** Render as an anchor instead of a button. Already resolved by the caller. */
+		href?: ResolvedPathname;
 		type?: 'button' | 'submit' | 'reset';
 		block?: boolean;
 		class?: string;
@@ -53,6 +54,7 @@
 </script>
 
 {#if href}
+	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- href is typed ResolvedPathname -->
 	<a {href} class={cls} aria-disabled={isDisabled} tabindex={isDisabled ? -1 : undefined} {...rest}>
 		{#if loading}<Spinner size="xs" tone="current" />{/if}
 		{@render children()}

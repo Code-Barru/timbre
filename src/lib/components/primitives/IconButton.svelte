@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { ResolvedPathname } from '$app/types';
 
 	type Variant = 'primary' | 'secondary' | 'ghost' | 'danger';
 	type Size = 'sm' | 'md' | 'lg';
@@ -10,7 +11,8 @@
 		variant?: Variant;
 		size?: Size;
 		disabled?: boolean;
-		href?: string;
+		/** Render as an anchor instead of a button. Already resolved by the caller. */
+		href?: ResolvedPathname;
 		class?: string;
 		children: Snippet;
 		[key: string]: unknown;
@@ -40,6 +42,7 @@
 </script>
 
 {#if href}
+	<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- href is typed ResolvedPathname -->
 	<a {href} class={cls} aria-label={label} title={label} {...rest}>{@render children()}</a>
 {:else}
 	<button type="button" class={cls} aria-label={label} title={label} {disabled} {...rest}>
