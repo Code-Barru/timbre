@@ -1,6 +1,6 @@
-CREATE TYPE "public"."card_state" AS ENUM('new', 'learning', 'review', 'relearning');--> statement-breakpoint
-CREATE TYPE "public"."card_type" AS ENUM('basic', 'cloze', 'minimal_pair');--> statement-breakpoint
-CREATE TYPE "public"."review_grade" AS ENUM('again', 'hard', 'good', 'easy');--> statement-breakpoint
+CREATE TYPE "public"."card_state_enum" AS ENUM('new', 'learning', 'review', 'relearning');--> statement-breakpoint
+CREATE TYPE "public"."card_type_enum" AS ENUM('basic', 'cloze', 'minimal_pair');--> statement-breakpoint
+CREATE TYPE "public"."review_grade_enum" AS ENUM('again', 'hard', 'good', 'easy');--> statement-breakpoint
 CREATE TABLE "task" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"title" text NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE "verification" (
 CREATE TABLE "card" (
 	"id" text PRIMARY KEY NOT NULL,
 	"deck_id" text NOT NULL,
-	"type" "card_type" NOT NULL,
+	"type" "card_type_enum" NOT NULL,
 	"payload" jsonb NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
@@ -72,7 +72,7 @@ CREATE TABLE "card_state" (
 	"elapsed_days" integer DEFAULT 0 NOT NULL,
 	"scheduled_days" integer DEFAULT 0 NOT NULL,
 	"reps" integer DEFAULT 0 NOT NULL,
-	"state" "card_state" DEFAULT 'new' NOT NULL,
+	"state" "card_state_enum" DEFAULT 'new' NOT NULL,
 	"lapses" integer DEFAULT 0 NOT NULL,
 	"last_reviewed_at" timestamp
 );
@@ -92,7 +92,7 @@ CREATE TABLE "review_log" (
 	"card_id" text NOT NULL,
 	"deck_id" text NOT NULL,
 	"reviewed_at" timestamp DEFAULT now() NOT NULL,
-	"grade" "review_grade" NOT NULL,
+	"grade" "review_grade_enum" NOT NULL,
 	"difficulty_before" real NOT NULL,
 	"difficulty_after" real NOT NULL,
 	"scheduled_days_before" integer NOT NULL,

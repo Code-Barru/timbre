@@ -12,9 +12,9 @@ import {
 } from 'drizzle-orm/pg-core';
 import { user } from './auth.schema';
 
-export const cardTypeEnum = pgEnum('card_type', ['basic', 'cloze', 'minimal_pair']);
-export const cardStateEnum = pgEnum('card_state', ['new', 'learning', 'review', 'relearning']);
-export const reviewGradeEnum = pgEnum('review_grade', ['again', 'hard', 'good', 'easy']);
+export const cardTypeEnum = pgEnum('card_type_enum', ['basic', 'cloze', 'minimal_pair']);
+export const cardStateEnum = pgEnum('card_state_enum', ['new', 'learning', 'review', 'relearning']);
+export const reviewGradeEnum = pgEnum('review_grade_enum', ['again', 'hard', 'good', 'easy']);
 
 export const deck = pgTable(
 	'deck',
@@ -71,11 +71,9 @@ export const cardState = pgTable(
 		reps: integer('reps').notNull().default(0),
 		state: cardStateEnum('state').notNull().default('new'),
 		lapses: integer('lapses').notNull().default(0),
-		lastReviewedAt: timestamp('last_reviewed_at'),
+		lastReviewedAt: timestamp('last_reviewed_at')
 	},
-	(table) => [
-		index('card_state_due_idx').on(table.due)
-	]
+	(table) => [index('card_state_due_idx').on(table.due)]
 );
 
 export const reviewLog = pgTable(
@@ -96,7 +94,7 @@ export const reviewLog = pgTable(
 		scheduledDaysBefore: integer('scheduled_days_before').notNull(),
 		scheduledDaysAfter: integer('scheduled_days_after').notNull(),
 		stabilityBefore: real('stability_before').notNull(),
-		stabilityAfter: real('stability_after').notNull(),
+		stabilityAfter: real('stability_after').notNull()
 	},
 	(table) => [
 		index('review_log_card_idx').on(table.cardId),
