@@ -1,5 +1,8 @@
 import { z } from 'zod';
 
+// Source of truth for the card_type_enum Postgres type.
+export const CARD_TYPES = ['basic', 'cloze', 'minimal_pair'] as const;
+
 const gender = z.enum(['m', 'f', 'n']);
 
 const basicCardPayload = z.object({
@@ -53,3 +56,8 @@ export const cardPayloadSchema = z
 	});
 
 export type CardPayload = z.infer<typeof cardPayloadSchema>;
+
+export type CardType = CardPayload['type'];
+
+/** Payload shape per card type, so `type` and `payload` stay correlated. */
+export type CardPayloadMap = { [T in CardType]: Extract<CardPayload, { type: T }> };

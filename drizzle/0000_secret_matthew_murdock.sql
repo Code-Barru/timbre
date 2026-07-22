@@ -55,65 +55,68 @@ CREATE TABLE "verification" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "card" (
-	"id" text PRIMARY KEY NOT NULL,
-	"deck_id" text NOT NULL,
-	"type" "card_type_enum" NOT NULL,
-	"payload" jsonb NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE "card_state" (
-	"card_id" text PRIMARY KEY NOT NULL,
-	"due" timestamp DEFAULT now() NOT NULL,
-	"stability" real DEFAULT 0 NOT NULL,
-	"difficulty" real DEFAULT 0 NOT NULL,
-	"elapsed_days" integer DEFAULT 0 NOT NULL,
-	"scheduled_days" integer DEFAULT 0 NOT NULL,
-	"reps" integer DEFAULT 0 NOT NULL,
-	"state" "card_state_enum" DEFAULT 'new' NOT NULL,
-	"lapses" integer DEFAULT 0 NOT NULL,
-	"last_reviewed_at" timestamp
-);
---> statement-breakpoint
 CREATE TABLE "deck" (
 	"id" text PRIMARY KEY NOT NULL,
 	"name" text NOT NULL,
 	"description" text,
 	"owner_id" text NOT NULL,
 	"language" text NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "card" (
+	"id" text PRIMARY KEY NOT NULL,
+	"deck_id" text NOT NULL,
+	"type" "card_type_enum" NOT NULL,
+	"payload" jsonb NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "card_deck_id_id_unique" UNIQUE("deck_id","id")
+);
+--> statement-breakpoint
+CREATE TABLE "card_state" (
+	"card_id" text PRIMARY KEY NOT NULL,
+	"deck_id" text NOT NULL,
+	"due" timestamp with time zone DEFAULT now() NOT NULL,
+	"stability" double precision DEFAULT 0 NOT NULL,
+	"difficulty" double precision DEFAULT 0 NOT NULL,
+	"elapsed_days" integer DEFAULT 0 NOT NULL,
+	"scheduled_days" integer DEFAULT 0 NOT NULL,
+	"learning_steps" integer DEFAULT 0 NOT NULL,
+	"reps" integer DEFAULT 0 NOT NULL,
+	"lapses" integer DEFAULT 0 NOT NULL,
+	"state" "card_state_enum" DEFAULT 'new' NOT NULL,
+	"last_reviewed_at" timestamp with time zone
 );
 --> statement-breakpoint
 CREATE TABLE "review_log" (
-	"id" bigserial PRIMARY KEY NOT NULL,
+	"id" bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY NOT NULL,
 	"card_id" text NOT NULL,
 	"deck_id" text NOT NULL,
-	"reviewed_at" timestamp DEFAULT now() NOT NULL,
+	"reviewed_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"grade" "review_grade_enum" NOT NULL,
-	"difficulty_before" real NOT NULL,
-	"difficulty_after" real NOT NULL,
-	"scheduled_days_before" integer NOT NULL,
-	"scheduled_days_after" integer NOT NULL,
-	"stability_before" real NOT NULL,
-	"stability_after" real NOT NULL
+	"state" "card_state_enum" NOT NULL,
+	"due" timestamp with time zone NOT NULL,
+	"stability" double precision NOT NULL,
+	"difficulty" double precision NOT NULL,
+	"elapsed_days" integer NOT NULL,
+	"last_elapsed_days" integer NOT NULL,
+	"scheduled_days" integer NOT NULL,
+	"learning_steps" integer DEFAULT 0 NOT NULL
 );
 --> statement-breakpoint
 ALTER TABLE "account" ADD CONSTRAINT "account_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "session" ADD CONSTRAINT "session_user_id_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "card" ADD CONSTRAINT "card_deck_id_deck_id_fk" FOREIGN KEY ("deck_id") REFERENCES "public"."deck"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "card_state" ADD CONSTRAINT "card_state_card_id_card_id_fk" FOREIGN KEY ("card_id") REFERENCES "public"."card"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "deck" ADD CONSTRAINT "deck_owner_id_user_id_fk" FOREIGN KEY ("owner_id") REFERENCES "public"."user"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "card" ADD CONSTRAINT "card_deck_id_deck_id_fk" FOREIGN KEY ("deck_id") REFERENCES "public"."deck"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "card_state" ADD CONSTRAINT "card_state_card_fk" FOREIGN KEY ("deck_id","card_id") REFERENCES "public"."card"("deck_id","id") ON DELETE cascade ON UPDATE cascade;--> statement-breakpoint
 ALTER TABLE "review_log" ADD CONSTRAINT "review_log_card_id_card_id_fk" FOREIGN KEY ("card_id") REFERENCES "public"."card"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "review_log" ADD CONSTRAINT "review_log_deck_id_deck_id_fk" FOREIGN KEY ("deck_id") REFERENCES "public"."deck"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "account_userId_idx" ON "account" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "session_userId_idx" ON "session" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "verification_identifier_idx" ON "verification" USING btree ("identifier");--> statement-breakpoint
-CREATE INDEX "card_deck_idx" ON "card" USING btree ("deck_id");--> statement-breakpoint
-CREATE INDEX "card_state_due_idx" ON "card_state" USING btree ("due");--> statement-breakpoint
 CREATE INDEX "deck_owner_idx" ON "deck" USING btree ("owner_id");--> statement-breakpoint
-CREATE INDEX "review_log_card_idx" ON "review_log" USING btree ("card_id");--> statement-breakpoint
-CREATE INDEX "review_log_deck_reviewed_idx" ON "review_log" USING btree ("deck_id","reviewed_at");--> statement-breakpoint
-CREATE INDEX "review_log_reviewed_idx" ON "review_log" USING btree ("reviewed_at");
+CREATE INDEX "card_state_deck_due_idx" ON "card_state" USING btree ("deck_id","due");--> statement-breakpoint
+CREATE INDEX "review_log_card_reviewed_idx" ON "review_log" USING btree ("card_id","reviewed_at");--> statement-breakpoint
+CREATE INDEX "review_log_deck_reviewed_idx" ON "review_log" USING btree ("deck_id","reviewed_at");

@@ -1,5 +1,5 @@
 {
-  "id": "c6102992-5a9a-4ee7-a2e1-016c18dfc03c",
+  "id": "15f08805-fa8a-4857-861e-40a70cda848f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -409,7 +409,7 @@
         },
         "type": {
           "name": "type",
-          "type": "card_type",
+          "type": "card_type_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
@@ -422,36 +422,20 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         }
       },
-      "indexes": {
-        "card_deck_idx": {
-          "name": "card_deck_idx",
-          "columns": [
-            {
-              "expression": "deck_id",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        }
-      },
+      "indexes": {},
       "foreignKeys": {
         "card_deck_id_deck_id_fk": {
           "name": "card_deck_id_deck_id_fk",
@@ -468,7 +452,16 @@
         }
       },
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
+      "uniqueConstraints": {
+        "card_deck_id_id_unique": {
+          "name": "card_deck_id_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "deck_id",
+            "id"
+          ]
+        }
+      },
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false
@@ -483,23 +476,29 @@
           "primaryKey": true,
           "notNull": true
         },
+        "deck_id": {
+          "name": "deck_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "due": {
           "name": "due",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
         "stability": {
           "name": "stability",
-          "type": "real",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": true,
           "default": 0
         },
         "difficulty": {
           "name": "difficulty",
-          "type": "real",
+          "type": "double precision",
           "primaryKey": false,
           "notNull": true,
           "default": 0
@@ -518,20 +517,19 @@
           "notNull": true,
           "default": 0
         },
+        "learning_steps": {
+          "name": "learning_steps",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 0
+        },
         "reps": {
           "name": "reps",
           "type": "integer",
           "primaryKey": false,
           "notNull": true,
           "default": 0
-        },
-        "state": {
-          "name": "state",
-          "type": "card_state",
-          "typeSchema": "public",
-          "primaryKey": false,
-          "notNull": true,
-          "default": "'new'"
         },
         "lapses": {
           "name": "lapses",
@@ -540,17 +538,31 @@
           "notNull": true,
           "default": 0
         },
+        "state": {
+          "name": "state",
+          "type": "card_state_enum",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'new'"
+        },
         "last_reviewed_at": {
           "name": "last_reviewed_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {
-        "card_state_due_idx": {
-          "name": "card_state_due_idx",
+        "card_state_deck_due_idx": {
+          "name": "card_state_deck_due_idx",
           "columns": [
+            {
+              "expression": "deck_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
             {
               "expression": "due",
               "isExpression": false,
@@ -565,18 +577,20 @@
         }
       },
       "foreignKeys": {
-        "card_state_card_id_card_id_fk": {
-          "name": "card_state_card_id_card_id_fk",
+        "card_state_card_fk": {
+          "name": "card_state_card_fk",
           "tableFrom": "card_state",
           "tableTo": "card",
           "columnsFrom": [
+            "deck_id",
             "card_id"
           ],
           "columnsTo": [
+            "deck_id",
             "id"
           ],
           "onDelete": "cascade",
-          "onUpdate": "no action"
+          "onUpdate": "cascade"
         }
       },
       "compositePrimaryKeys": {},
@@ -621,14 +635,14 @@
         },
         "created_at": {
           "name": "created_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
         "updated_at": {
           "name": "updated_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
@@ -678,9 +692,20 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "bigserial",
+          "type": "bigint",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "identity": {
+            "type": "always",
+            "name": "review_log_id_seq",
+            "schema": "public",
+            "increment": "1",
+            "startWith": "1",
+            "minValue": "1",
+            "maxValue": "9223372036854775807",
+            "cache": "1",
+            "cycle": false
+          }
         },
         "card_id": {
           "name": "card_id",
@@ -696,61 +721,81 @@
         },
         "reviewed_at": {
           "name": "reviewed_at",
-          "type": "timestamp",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true,
           "default": "now()"
         },
         "grade": {
           "name": "grade",
-          "type": "review_grade",
+          "type": "review_grade_enum",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
-        "difficulty_before": {
-          "name": "difficulty_before",
-          "type": "real",
+        "state": {
+          "name": "state",
+          "type": "card_state_enum",
+          "typeSchema": "public",
           "primaryKey": false,
           "notNull": true
         },
-        "difficulty_after": {
-          "name": "difficulty_after",
-          "type": "real",
+        "due": {
+          "name": "due",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": true
         },
-        "scheduled_days_before": {
-          "name": "scheduled_days_before",
+        "stability": {
+          "name": "stability",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "difficulty": {
+          "name": "difficulty",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "elapsed_days": {
+          "name": "elapsed_days",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "scheduled_days_after": {
-          "name": "scheduled_days_after",
+        "last_elapsed_days": {
+          "name": "last_elapsed_days",
           "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "stability_before": {
-          "name": "stability_before",
-          "type": "real",
+        "scheduled_days": {
+          "name": "scheduled_days",
+          "type": "integer",
           "primaryKey": false,
           "notNull": true
         },
-        "stability_after": {
-          "name": "stability_after",
-          "type": "real",
+        "learning_steps": {
+          "name": "learning_steps",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": true
+          "notNull": true,
+          "default": 0
         }
       },
       "indexes": {
-        "review_log_card_idx": {
-          "name": "review_log_card_idx",
+        "review_log_card_reviewed_idx": {
+          "name": "review_log_card_reviewed_idx",
           "columns": [
             {
               "expression": "card_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "reviewed_at",
               "isExpression": false,
               "asc": true,
               "nulls": "last"
@@ -770,21 +815,6 @@
               "asc": true,
               "nulls": "last"
             },
-            {
-              "expression": "reviewed_at",
-              "isExpression": false,
-              "asc": true,
-              "nulls": "last"
-            }
-          ],
-          "isUnique": false,
-          "concurrently": false,
-          "method": "btree",
-          "with": {}
-        },
-        "review_log_reviewed_idx": {
-          "name": "review_log_reviewed_idx",
-          "columns": [
             {
               "expression": "reviewed_at",
               "isExpression": false,
@@ -834,8 +864,8 @@
     }
   },
   "enums": {
-    "public.card_state": {
-      "name": "card_state",
+    "public.card_state_enum": {
+      "name": "card_state_enum",
       "schema": "public",
       "values": [
         "new",
@@ -844,8 +874,8 @@
         "relearning"
       ]
     },
-    "public.card_type": {
-      "name": "card_type",
+    "public.card_type_enum": {
+      "name": "card_type_enum",
       "schema": "public",
       "values": [
         "basic",
@@ -853,8 +883,8 @@
         "minimal_pair"
       ]
     },
-    "public.review_grade": {
-      "name": "review_grade",
+    "public.review_grade_enum": {
+      "name": "review_grade_enum",
       "schema": "public",
       "values": [
         "again",

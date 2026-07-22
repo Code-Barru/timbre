@@ -5,16 +5,24 @@ import {
 	text,
 	timestamp,
 	integer,
-	real,
-	bigserial,
+	bigint,
+	doublePrecision,
 	jsonb,
-	index
+	index,
+	unique,
+	foreignKey
 } from 'drizzle-orm/pg-core';
 import { user } from './auth.schema';
+// Relative, not $lib: drizzle-kit loads this file outside Vite, where the alias
+// does not resolve. The zod schemas are the source of truth for these values.
+import { CARD_TYPES, type CardPayload } from '../../schemas/card';
+import { REVIEW_GRADES } from '../../schemas/review';
 
-export const cardTypeEnum = pgEnum('card_type_enum', ['basic', 'cloze', 'minimal_pair']);
+const tstz = (name: string) => timestamp(name, { withTimezone: true, mode: 'date' });
+
+export const cardTypeEnum = pgEnum('card_type_enum', CARD_TYPES);
 export const cardStateEnum = pgEnum('card_state_enum', ['new', 'learning', 'review', 'relearning']);
-export const reviewGradeEnum = pgEnum('review_grade_enum', ['again', 'hard', 'good', 'easy']);
+export const reviewGradeEnum = pgEnum('review_grade_enum', REVIEW_GRADES);
 
 export const deck = pgTable(
 	'deck',
@@ -28,13 +36,13 @@ export const deck = pgTable(
 			.notNull()
 			.references(() => user.id, { onDelete: 'cascade' }),
 		language: text('language').notNull(),
-		createdAt: timestamp('created_at').defaultNow().notNull(),
-		updatedAt: timestamp('updated_at')
+		createdAt: tstz('created_at').defaultNow().notNull(),
+		updatedAt: tstz('updated_at')
 			.defaultNow()
 			.$onUpdate(() => new Date())
 			.notNull()
 	},
-	(table) => [index('deck_owner_idx').on(table.ownerId)]
+	(t) => [index('deck_owner_idx').on(t.ownerId)]
 );
 
 export const card = pgTable(
@@ -47,59 +55,68 @@ export const card = pgTable(
 			.notNull()
 			.references(() => deck.id, { onDelete: 'cascade' }),
 		type: cardTypeEnum('type').notNull(),
-		payload: jsonb('payload').notNull(),
-		createdAt: timestamp('created_at').defaultNow().notNull(),
-		updatedAt: timestamp('updated_at')
+		payload: jsonb('payload').$type<CardPayload>().notNull(),
+		createdAt: tstz('created_at').defaultNow().notNull(),
+		updatedAt: tstz('updated_at')
 			.defaultNow()
 			.$onUpdate(() => new Date())
 			.notNull()
 	},
-	(table) => [index('card_deck_idx').on(table.deckId)]
+	(t) => [unique('card_deck_id_id_unique').on(t.deckId, t.id)]
 );
 
 export const cardState = pgTable(
 	'card_state',
 	{
-		cardId: text('card_id')
-			.primaryKey()
-			.references(() => card.id, { onDelete: 'cascade' }),
-		due: timestamp('due').defaultNow().notNull(),
-		stability: real('stability').notNull().default(0),
-		difficulty: real('difficulty').notNull().default(0),
-		elapsed_days: integer('elapsed_days').notNull().default(0),
-		scheduled_days: integer('scheduled_days').notNull().default(0),
+		cardId: text('card_id').primaryKey(),
+		deckId: text('deck_id').notNull(),
+		due: tstz('due').defaultNow().notNull(),
+		stability: doublePrecision('stability').notNull().default(0),
+		difficulty: doublePrecision('difficulty').notNull().default(0),
+		elapsedDays: integer('elapsed_days').notNull().default(0),
+		scheduledDays: integer('scheduled_days').notNull().default(0),
+		learningSteps: integer('learning_steps').notNull().default(0),
 		reps: integer('reps').notNull().default(0),
-		state: cardStateEnum('state').notNull().default('new'),
 		lapses: integer('lapses').notNull().default(0),
-		lastReviewedAt: timestamp('last_reviewed_at')
+		state: cardStateEnum('state').notNull().default('new'),
+		lastReviewedAt: tstz('last_reviewed_at')
 	},
-	(table) => [index('card_state_due_idx').on(table.due)]
+	(t) => [
+		foreignKey({
+			columns: [t.deckId, t.cardId],
+			foreignColumns: [card.deckId, card.id],
+			name: 'card_state_card_fk'
+		})
+			.onUpdate('cascade')
+			.onDelete('cascade'),
+		index('card_state_deck_due_idx').on(t.deckId, t.due)
+	]
 );
 
 export const reviewLog = pgTable(
 	'review_log',
 	{
-		id: bigserial('id', { mode: 'number' }).primaryKey(),
+		id: bigint('id', { mode: 'number' }).primaryKey().generatedAlwaysAsIdentity(),
 		cardId: text('card_id')
 			.notNull()
 			.references(() => card.id, { onDelete: 'cascade' }),
-		// dénormalisé depuis card.deckId pour éviter une jointure sur les stats par deck
 		deckId: text('deck_id')
 			.notNull()
 			.references(() => deck.id, { onDelete: 'cascade' }),
-		reviewedAt: timestamp('reviewed_at').defaultNow().notNull(),
+		reviewedAt: tstz('reviewed_at').defaultNow().notNull(),
 		grade: reviewGradeEnum('grade').notNull(),
-		difficultyBefore: real('difficulty_before').notNull(),
-		difficultyAfter: real('difficulty_after').notNull(),
-		scheduledDaysBefore: integer('scheduled_days_before').notNull(),
-		scheduledDaysAfter: integer('scheduled_days_after').notNull(),
-		stabilityBefore: real('stability_before').notNull(),
-		stabilityAfter: real('stability_after').notNull()
+		state: cardStateEnum('state').notNull(),
+		due: tstz('due').notNull(),
+		stability: doublePrecision('stability').notNull(),
+		difficulty: doublePrecision('difficulty').notNull(),
+		elapsedDays: integer('elapsed_days').notNull(),
+		lastElapsedDays: integer('last_elapsed_days').notNull(),
+		scheduledDays: integer('scheduled_days').notNull(),
+		learningSteps: integer('learning_steps').notNull().default(0)
 	},
-	(table) => [
-		index('review_log_card_idx').on(table.cardId),
-		index('review_log_deck_reviewed_idx').on(table.deckId, table.reviewedAt),
-		index('review_log_reviewed_idx').on(table.reviewedAt)
+	(t) => [
+		index('review_log_card_reviewed_idx').on(t.cardId, t.reviewedAt),
+		index('review_log_deck_reviewed_idx').on(t.deckId, t.reviewedAt)
 	]
 );
 
@@ -127,6 +144,10 @@ export const cardStateRelations = relations(cardState, ({ one }) => ({
 	card: one(card, {
 		fields: [cardState.cardId],
 		references: [card.id]
+	}),
+	deck: one(deck, {
+		fields: [cardState.deckId],
+		references: [deck.id]
 	})
 }));
 

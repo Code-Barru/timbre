@@ -40,7 +40,7 @@ stages = ["pre-commit"]
 id = "forbid-env-files"
 name = "forbid .env files in git"
 language = "fail"
-entry = "Ne commite pas de fichier d'environnement. Utilise .env.example."
+entry = "Don't commit .env files. Use .env.example instead."
 files = "(^|/)\\.env($|\\.)"
 exclude = "(^|/)\\.env\\.(example|test)$"
 stages = ["pre-commit"]
@@ -87,3 +87,13 @@ entry = "npx eslint ."
 pass_filenames = false
 always_run = true
 stages = ["pre-push"]
+
+
+[[repos.hooks]]
+id = "vitest"
+name = "vitest (whole project)"
+language = "system"
+entry = "npx vitest run"
+pass_filenames = false
+always_run = true
+stages = ["pre-commit"]
