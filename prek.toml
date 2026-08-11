@@ -1,0 +1,38 @@
+[[repos]]
+repo = "local"
+
+[[repos.hooks]]
+id = "cargo-check"
+name = "cargo check (backend)"
+language = "system"
+pass_filenames = false
+files = "^backend/"
+entry = "sh -c 'cd backend && cargo check --all-targets'"
+priority = 0
+
+[[repos.hooks]]
+id = "cargo-clippy"
+name = "cargo clippy --pedantic (deny warnings)"
+language = "system"
+pass_filenames = false
+files = "^backend/"
+entry = "sh -c 'cd backend && cargo clippy --all-targets -- -W clippy::all -W clippy::pedantic -D warnings'"
+priority = 1
+
+[[repos.hooks]]
+id = "prettier"
+name = "prettier --write (frontend)"
+language = "system"
+files = "^frontend/.*\\.(js|cjs|mjs|ts|svelte|css|json|md|html|yaml|yml)$"
+exclude = "^frontend/(node_modules|\\.svelte-kit|build)/"
+entry = "scripts/prek/prettier-write.sh"
+priority = 2
+
+[[repos.hooks]]
+id = "eslint"
+name = "eslint (frontend)"
+language = "system"
+files = "^frontend/.*\\.(js|cjs|mjs|ts|svelte)$"
+exclude = "^frontend/(node_modules|\\.svelte-kit|build)/"
+entry = "scripts/prek/eslint.sh"
+priority = 3
