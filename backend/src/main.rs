@@ -1,11 +1,20 @@
-use sqlx::{Pool, Postgres, Result};
+use timbre::{AppState, Config};
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let pool: Pool<Postgres> = Pool::connect("postgres://timbre:timbre@localhost/timbre").await?;
-    println!("{pool:?}");
-    let res = sqlx::query("SELECT 1").execute(&pool).await?;
-    println!("{res:?}");
-    pool.close().await;
-    Ok(())
+async fn main() {
+    tracing_subscriber::fmt()
+        .with_target(false)
+        .compact()
+        .init();
+
+    let config = Config::new();
+    let state = AppState::new(config.clone()).await;
+    let app = timbre::app(state);
+
+    let listener = tokio::net::TcpListener::bind(format!("0.0.0.0:{}", config.port))
+        .await
+        .unwrap_or_else(|_| panic!("Failed to bind port {}", config.port));
+
+    tracing::info!("Server running on port {}", config.port);
+    axum::serve(listener, app).await.unwrap();
 }
