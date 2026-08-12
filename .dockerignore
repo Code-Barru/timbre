@@ -1,0 +1,8 @@
+backend/target
+frontend/node_modules
+frontend/build
+frontend/.svelte-kit
+.git
+.env
+done.txt
+todo.txt
