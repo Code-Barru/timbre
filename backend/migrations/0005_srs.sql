@@ -2,12 +2,12 @@
 -- Materialized cards, review log, FSRS-6 params.
 
 CREATE TABLE cards (
-    id       uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    note_id  uuid NOT NULL REFERENCES notes ON DELETE CASCADE,
+    id       text PRIMARY KEY,
+    note_id  text NOT NULL REFERENCES notes ON DELETE CASCADE,
     -- user_id and deck_id are denormalized: keeps RLS policies flat
     -- (plain equality, no subquery) and serves the queue indexes.
-    user_id  uuid NOT NULL REFERENCES users ON DELETE CASCADE,
-    deck_id  uuid NOT NULL REFERENCES decks,
+    user_id  text NOT NULL REFERENCES users ON DELETE CASCADE,
+    deck_id  text NOT NULL REFERENCES decks,
     ord      smallint NOT NULL,          -- template index in note_types.spec
     -- NULL = rendered on the fly from the template (hybrid model).
     -- Non-NULL = frozen card, hand-edited, skipped by regeneration.
@@ -54,8 +54,8 @@ CREATE TRIGGER cards_touch_rev
 -- Sole source of truth for optimizer training.
 CREATE TABLE reviews (
     id          bigserial PRIMARY KEY,
-    card_id     uuid NOT NULL REFERENCES cards ON DELETE CASCADE,
-    user_id     uuid NOT NULL REFERENCES users ON DELETE CASCADE,
+    card_id     text NOT NULL REFERENCES cards ON DELETE CASCADE,
+    user_id     text NOT NULL REFERENCES users ON DELETE CASCADE,
     reviewed_at timestamptz NOT NULL DEFAULT now(),
     rating      smallint NOT NULL CHECK (rating BETWEEN 1 AND 4),  -- again/hard/good/easy
     is_manual   boolean  NOT NULL DEFAULT false,   -- cram, reschedule: excluded from training
@@ -68,9 +68,9 @@ CREATE INDEX reviews_train_idx ON reviews (user_id, card_id, reviewed_at);
 CREATE INDEX reviews_stats_idx ON reviews (user_id, reviewed_at);
 
 CREATE TABLE fsrs_params (
-    id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id    uuid NOT NULL REFERENCES users ON DELETE CASCADE,
-    deck_id    uuid REFERENCES decks ON DELETE CASCADE,   -- NULL = account default params
+    id         text PRIMARY KEY,
+    user_id    text NOT NULL REFERENCES users ON DELETE CASCADE,
+    deck_id    text REFERENCES decks ON DELETE CASCADE,   -- NULL = account default params
     weights    double precision[] NOT NULL CHECK (array_length(weights, 1) = 21),  -- FSRS-6
     -- {log_loss, rmse_bins, n_reviews, version:'fsrs-6'}: lets you compare
     -- two trainings and roll back by toggling is_active.
@@ -81,5 +81,5 @@ CREATE TABLE fsrs_params (
 
 -- Only one active param set per scope; history stays queryable.
 CREATE UNIQUE INDEX fsrs_params_active_idx
-    ON fsrs_params (user_id, coalesce(deck_id, nil_uuid()))
+    ON fsrs_params (user_id, coalesce(deck_id, nil_id()))
     WHERE is_active;

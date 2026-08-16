@@ -2,7 +2,7 @@
 -- Accounts, study preferences, sessions.
 
 CREATE TABLE users (
-    id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+    id            text PRIMARY KEY,
     email         citext UNIQUE NOT NULL,
     password_hash text   NOT NULL,                        -- argon2id
     display_name  text   NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE users (
 
 -- Default study settings. A deck may partially override them (decks.config).
 CREATE TABLE user_preferences (
-    user_id                   uuid PRIMARY KEY REFERENCES users ON DELETE CASCADE,
+    user_id                   text PRIMARY KEY REFERENCES users ON DELETE CASCADE,
     new_per_day               integer  NOT NULL DEFAULT 20  CHECK (new_per_day >= 0),
     reviews_per_day           integer  NOT NULL DEFAULT 200 CHECK (reviews_per_day >= 0),
     learning_steps_min        integer[] NOT NULL DEFAULT '{1,10}',
@@ -45,7 +45,7 @@ CREATE TRIGGER users_default_preferences
 -- Token never stored in clear: cookie holds the secret, DB holds only its sha256.
 CREATE TABLE sessions (
     token_hash bytea PRIMARY KEY,
-    user_id    uuid  NOT NULL REFERENCES users ON DELETE CASCADE,
+    user_id    text  NOT NULL REFERENCES users ON DELETE CASCADE,
     created_at timestamptz NOT NULL DEFAULT now(),
     expires_at timestamptz NOT NULL
 );

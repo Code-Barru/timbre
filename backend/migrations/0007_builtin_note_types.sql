@@ -4,10 +4,10 @@
 -- Fluent Forever rule: no French or English text on a card,
 -- meaning is always carried by an image.
 
-INSERT INTO note_types (user_id, key, name, spec) VALUES
+INSERT INTO note_types (id, user_id, key, name, spec) VALUES
 
 -- Single word: the 4 template cards (obraz->slowo, slowo->obraz, audio->obraz, IPA->slowo).
-(NULL, 'ff_slowo', 'Słowo', '{
+('00000000000000000000000001', NULL, 'ff_slowo', 'Słowo', '{
   "v": 1,
   "fields": [
     {"key": "slowo",       "label": "Słowo",                "kind": "text",     "required": true},
@@ -40,7 +40,7 @@ INSERT INTO note_types (user_id, key, name, spec) VALUES
 }'::jsonb),
 
 -- Cloze sentence: a new word, new form, or surprising order (04).
-(NULL, 'ff_zdanie', 'Zdanie', '{
+('00000000000000000000000002', NULL, 'ff_zdanie', 'Zdanie', '{
   "v": 1,
   "fields": [
     {"key": "zdanie",      "label": "Zdanie z luką",        "kind": "sentence_cloze", "required": true},
@@ -60,7 +60,7 @@ INSERT INTO note_types (user_id, key, name, spec) VALUES
 }'::jsonb),
 
 -- Minimal pair: auditory discrimination (02). One card per test direction.
-(NULL, 'ff_para_minimalna', 'Para minimalna', '{
+('00000000000000000000000003', NULL, 'ff_para_minimalna', 'Para minimalna', '{
   "v": 1,
   "fields": [
     {"key": "kontrast", "label": "Kontrast",  "kind": "text",  "required": true},
@@ -80,7 +80,7 @@ INSERT INTO note_types (user_id, key, name, spec) VALUES
 }'::jsonb),
 
 -- Spelling/sound correspondence (02, card A of pronunciation chapter).
-(NULL, 'ff_wymowa', 'Wymowa', '{
+('00000000000000000000000004', NULL, 'ff_wymowa', 'Wymowa', '{
   "v": 1,
   "fields": [
     {"key": "pisownia", "label": "Pisownia",      "kind": "text",  "required": true},

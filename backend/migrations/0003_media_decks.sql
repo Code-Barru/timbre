@@ -2,8 +2,8 @@
 -- Media (single backend chosen per env, abstracted in Rust) and deck tree.
 
 CREATE TABLE media (
-    id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id     uuid NOT NULL REFERENCES users ON DELETE CASCADE,
+    id          text PRIMARY KEY,
+    user_id     text NOT NULL REFERENCES users ON DELETE CASCADE,
     storage_key text NOT NULL,          -- 'ab/cd/<sha256>.jpg' — opaque key, never an absolute path
     sha256      bytea  NOT NULL,
     mime        text   NOT NULL,
@@ -17,8 +17,8 @@ CREATE TABLE media (
 );
 
 CREATE TABLE decks (
-    id      uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id uuid NOT NULL REFERENCES users ON DELETE CASCADE,
+    id      text PRIMARY KEY,
+    user_id text NOT NULL REFERENCES users ON DELETE CASCADE,
     name    text NOT NULL,
     path    text NOT NULL,                     -- 'polski::wymowa' — prefix hierarchy
     lang    text NOT NULL DEFAULT 'pl',

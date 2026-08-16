@@ -27,9 +27,9 @@ ALTER DEFAULT PRIVILEGES IN SCHEMA public
 -- STABLE is required: as VOLATILE (the default), Postgres would re-evaluate
 -- the function per scanned row instead of once per query.
 -- Returns NULL if the setting isn't set, which fails every policy: fail closed.
-CREATE OR REPLACE FUNCTION current_app_user() RETURNS uuid
+CREATE OR REPLACE FUNCTION current_app_user() RETURNS text
 LANGUAGE sql STABLE PARALLEL SAFE AS
-$$ SELECT nullif(current_setting('app.user_id', true), '')::uuid $$;
+$$ SELECT nullif(current_setting('app.user_id', true), '') $$;
 
 -- All policies are plain equality on a local user_id column.
 -- No subquery, no join: the planner treats them as an ordinary

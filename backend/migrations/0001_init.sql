@@ -12,10 +12,9 @@ CREATE SEQUENCE change_seq;
 CREATE TYPE card_state AS ENUM ('new', 'learning', 'review', 'relearning');
 
 -- Sentinel for unique indexes on nullable columns.
--- uuid_nil() belongs to uuid-ossp, not pgcrypto — use the literal instead.
-CREATE OR REPLACE FUNCTION nil_uuid() RETURNS uuid
+CREATE OR REPLACE FUNCTION nil_id() RETURNS text
 LANGUAGE sql IMMUTABLE PARALLEL SAFE AS
-$$ SELECT '00000000-0000-0000-0000-000000000000'::uuid $$;
+$$ SELECT '00000000000000000000000000' $$;
 
 -- Bumps updated_at on UPDATE and advances the sync cursor.
 CREATE OR REPLACE FUNCTION touch_rev() RETURNS trigger

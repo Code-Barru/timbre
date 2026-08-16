@@ -2,8 +2,8 @@
 -- Note types (fields + templates in jsonb), notes, community packs.
 
 CREATE TABLE note_types (
-    id      uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id uuid REFERENCES users ON DELETE CASCADE,   -- NULL = builtin, visible to all
+    id      text PRIMARY KEY,
+    user_id text REFERENCES users ON DELETE CASCADE,   -- NULL = builtin, visible to all
     key     text NOT NULL,                             -- 'ff_slowo', 'ff_zdanie', ...
     name    text NOT NULL,
     -- {v:1, fields:[{key,label,kind,required}], templates:[{key,name,front,back,condition}]}
@@ -13,15 +13,15 @@ CREATE TABLE note_types (
 );
 
 CREATE UNIQUE INDEX note_types_user_key_idx
-    ON note_types (coalesce(user_id, nil_uuid()), key);
+    ON note_types (coalesce(user_id, nil_id()), key);
 
 CREATE TABLE notes (
-    id           uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id      uuid NOT NULL REFERENCES users ON DELETE CASCADE,
-    note_type_id uuid NOT NULL REFERENCES note_types,
-    deck_id      uuid NOT NULL REFERENCES decks,
+    id           text PRIMARY KEY,
+    user_id      text NOT NULL REFERENCES users ON DELETE CASCADE,
+    note_type_id text NOT NULL REFERENCES note_types,
+    deck_id      text NOT NULL REFERENCES decks,
     -- {v:1, slowo, ipa, rodzaj, skojarzenie, osobiste, uwagi,
-    --  obraz:<media uuid>, audio:<media uuid>}
+    --  obraz:<media id>, audio:<media id>}
     fields       jsonb NOT NULL,
     -- 'grupa:aspekt-pisac', 'grupa:przypadek-loc', 'kontrast:s-sz'
     -- Feeds user_preferences.max_new_per_group_per_day.
@@ -60,10 +60,10 @@ CREATE TRIGGER notes_touch_rev
     FOR EACH ROW EXECUTE FUNCTION touch_rev();
 
 CREATE TABLE installed_packs (
-    user_id      uuid REFERENCES users ON DELETE CASCADE,
+    user_id      text REFERENCES users ON DELETE CASCADE,
     pack         text NOT NULL,
     version      text NOT NULL,
-    deck_id      uuid NOT NULL REFERENCES decks,
+    deck_id      text NOT NULL REFERENCES decks,
     installed_at timestamptz NOT NULL DEFAULT now(),
     PRIMARY KEY (user_id, pack)
 );
