@@ -1,5 +1,3 @@
-use std::fmt::Write;
-
 use axum::http::StatusCode;
 use rand::Rng;
 use sha2::{Digest, Sha256};
@@ -8,7 +6,7 @@ use sqlx::PgPool;
 use crate::{
     AppError,
     auth::{User, dto::RegisterDto, hash_password},
-    util::Id,
+    util::{Id, hex_encode},
 };
 
 pub async fn create_user(pool: &PgPool, user: RegisterDto) -> Result<User, AppError> {
@@ -57,13 +55,6 @@ pub async fn create_session(pool: &PgPool, user_id: Id, ttl_days: u16) -> Result
     })?;
 
     Ok(token)
-}
-
-fn hex_encode(bytes: &[u8]) -> String {
-    bytes.iter().fold(String::new(), |mut hex, b| {
-        let _ = write!(hex, "{b:02x}");
-        hex
-    })
 }
 
 pub async fn get_user_from_session(pool: &PgPool, token: &[u8]) -> Result<Option<User>, AppError> {

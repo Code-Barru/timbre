@@ -1,4 +1,5 @@
 use std::fmt;
+use std::fmt::Write as _;
 
 use serde::{Deserialize, Serialize};
 use sqlx::encode::IsNull;
@@ -52,4 +53,11 @@ impl Decode<'_, Postgres> for Id {
     fn decode(value: PgValueRef<'_>) -> Result<Self, BoxDynError> {
         Ok(Id(Ulid::from_string(value.as_str()?)?))
     }
+}
+
+pub(crate) fn hex_encode(bytes: &[u8]) -> String {
+    bytes.iter().fold(String::new(), |mut hex, b| {
+        let _ = write!(hex, "{b:02x}");
+        hex
+    })
 }
