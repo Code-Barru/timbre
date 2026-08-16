@@ -5,6 +5,9 @@ use axum::http::StatusCode;
 
 use crate::AppError;
 
+/// Argon2id, params from the crate's `Default` (OWASP-recommended).
+/// Failure means the crypto primitive broke, not caller input, so it
+/// collapses to a generic 500.
 pub fn hash_password(password: &str) -> Result<String, AppError> {
     let salt = SaltString::generate(&mut OsRng);
     Argon2::default()
@@ -18,6 +21,9 @@ pub fn hash_password(password: &str) -> Result<String, AppError> {
         })
 }
 
+/// `Ok(false)` means wrong password, an expected outcome. `Err` means the
+/// stored hash is malformed, a server-side problem. Callers map `Ok(false)`
+/// to 401 and `Err` to 500.
 pub fn verify_password(password: &str, hash: &str) -> Result<bool, AppError> {
     let parsed_hash = PasswordHash::new(hash).map_err(|_| {
         AppError::new(

@@ -9,6 +9,12 @@ use crate::{
     util::{Id, hex_encode},
 };
 
+// Every function here takes the owner pool from AppState, never app_user.
+// users is RLS-protected on id = current_app_user() (migrations/0006_rls.sql),
+// but these queries run before an app.user_id identity exists: email
+// lookup, account creation, session token resolution. sessions stays
+// outside RLS for the same reason.
+
 pub async fn create_user(pool: &PgPool, user: RegisterDto) -> Result<User, AppError> {
     let id = Id::generate();
     let password_hash = hash_password(&user.password)?;
@@ -33,6 +39,8 @@ pub async fn create_user(pool: &PgPool, user: RegisterDto) -> Result<User, AppEr
     Ok(user)
 }
 
+/// Returns the plaintext token for the cookie.
+/// Only its sha256 goes to `sessions.token_hash`
 pub async fn create_session(pool: &PgPool, user_id: Id, ttl_days: u16) -> Result<String, AppError> {
     let mut token_bytes = [0u8; 32];
     rand::rng().fill_bytes(&mut token_bytes);
@@ -57,6 +65,8 @@ pub async fn create_session(pool: &PgPool, user_id: Id, ttl_days: u16) -> Result
     Ok(token)
 }
 
+/// Called from the `User` extractor on every protected route. Its `user.id`
+/// return value is what handlers pass to `AppState::rls_transaction`.
 pub async fn get_user_from_session(pool: &PgPool, token: &[u8]) -> Result<Option<User>, AppError> {
     let token_hash = Sha256::digest(token);
 
