@@ -10,7 +10,7 @@ use crate::{
     auth::{
         User, create_session, create_user,
         dto::{LoginDto, RegisterDto},
-        get_user_from_email, revoke_session, user_exists, verify_password,
+        get_user_from_email, hash_password, revoke_session, user_exists, verify_password,
     },
     extract::AppJson,
     middleware::auth::{SESSION_COOKIE, build_session_cookie},
@@ -60,7 +60,9 @@ pub async fn login(
     AppJson(body): AppJson<LoginDto>,
 ) -> Result<(CookieJar, Data<User>), AppError> {
     body.validate()?;
-    let Ok(Some(user)) = get_user_from_email(&pool, &body.email).await else {
+    let Some(user) = get_user_from_email(&pool, &body.email).await? else {
+        // Hash the password to avoid timing attacks.
+        hash_password(&body.password)?;
         return Err(AppError::new(
             "Invalid email or password".to_string(),
             StatusCode::UNAUTHORIZED,
