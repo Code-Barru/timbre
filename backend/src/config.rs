@@ -11,7 +11,7 @@ pub struct Config {
     #[serde(default)]
     pub public_url: Option<String>,
 
-    #[serde(default)]
+    #[serde(default = "d_true")]
     pub allow_registration: bool,
     #[serde(default = "d_session")]
     pub session_ttl_days: u16,
