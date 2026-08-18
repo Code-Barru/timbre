@@ -7,7 +7,8 @@ use axum_extra::extract::cookie::{Cookie, SameSite};
 use sqlx::PgPool;
 use time::Duration;
 
-use crate::auth::User;
+use crate::user::User;
+
 use crate::{AppError, Config, auth::get_user_from_session};
 
 pub const SESSION_COOKIE: &str = "session";

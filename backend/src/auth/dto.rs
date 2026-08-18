@@ -3,7 +3,7 @@ use validator::{Validate, ValidationError};
 
 #[derive(Debug, Deserialize, Validate)]
 #[serde(rename_all = "camelCase")]
-pub struct RegisterDto {
+pub struct RegisterRequest {
     #[validate(email)]
     pub email: String,
     #[validate(length(min = 1, max = 25))]
@@ -36,7 +36,7 @@ fn validate_password_complexity(password: &str) -> Result<(), ValidationError> {
 }
 
 #[derive(Debug, Deserialize, Validate)]
-pub struct LoginDto {
+pub struct LoginRequest {
     #[validate(email)]
     pub email: String,
     pub password: String,

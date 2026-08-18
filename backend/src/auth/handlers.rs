@@ -8,12 +8,13 @@ use validator::Validate;
 use crate::{
     AppError, AppState, Config, Data,
     auth::{
-        User, create_session, create_user,
-        dto::{LoginDto, RegisterDto},
+        create_session, create_user,
+        dto::{LoginRequest, RegisterRequest},
         get_user_from_email, hash_password, revoke_session, user_exists, verify_password,
     },
     extract::AppJson,
     middleware::auth::{SESSION_COOKIE, build_session_cookie},
+    user::User,
 };
 
 pub fn get_router() -> Router<AppState> {
@@ -27,7 +28,7 @@ pub async fn register(
     State(pool): State<PgPool>,
     State(config): State<Arc<Config>>,
     jar: CookieJar,
-    AppJson(body): AppJson<RegisterDto>,
+    AppJson(body): AppJson<RegisterRequest>,
 ) -> Result<(CookieJar, Data<User>), AppError> {
     if !config.allow_registration {
         return Err(AppError::new(
@@ -44,7 +45,7 @@ pub async fn register(
     }
 
     let user = create_user(&pool, body).await?;
-    let token = create_session(&pool, user.id, config.session_ttl_days).await?;
+    let token = create_session(&pool, &user.id, config.session_ttl_days).await?;
     let cookie = build_session_cookie(token, &config);
 
     Ok((
@@ -57,7 +58,7 @@ pub async fn login(
     State(pool): State<PgPool>,
     State(config): State<Arc<Config>>,
     jar: CookieJar,
-    AppJson(body): AppJson<LoginDto>,
+    AppJson(body): AppJson<LoginRequest>,
 ) -> Result<(CookieJar, Data<User>), AppError> {
     body.validate()?;
     let Some(user) = get_user_from_email(&pool, &body.email).await? else {
@@ -76,7 +77,7 @@ pub async fn login(
         ));
     }
 
-    let token = create_session(&pool, user.id, config.session_ttl_days).await?;
+    let token = create_session(&pool, &user.id, config.session_ttl_days).await?;
     let cookie = build_session_cookie(token, &config);
     Ok((jar.add(cookie), Data(user)))
 }

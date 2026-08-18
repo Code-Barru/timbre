@@ -8,6 +8,7 @@ use crate::{AppError, AppResult, AppState, Data};
 pub fn app(state: AppState) -> Router {
     let api = Router::new()
         .nest("/auth", crate::auth::get_router())
+        .nest("/user", crate::user::get_router())
         .route("/health", get(health_db))
         .fallback(api_not_found);
 

@@ -2,10 +2,12 @@ use axum::http::StatusCode;
 use rand::Rng;
 use sha2::{Digest, Sha256};
 use sqlx::PgPool;
+use tracing::error;
 
 use crate::{
     AppError,
-    auth::{User, dto::RegisterDto, hash_password},
+    auth::{dto::RegisterRequest, hash_password},
+    user::User,
     util::{Id, hex_encode},
 };
 
@@ -15,12 +17,12 @@ use crate::{
 // lookup, account creation, session token resolution. sessions stays
 // outside RLS for the same reason.
 
-pub async fn create_user(pool: &PgPool, user: RegisterDto) -> Result<User, AppError> {
+pub async fn create_user(pool: &PgPool, user: RegisterRequest) -> Result<User, AppError> {
     let id = Id::generate();
     let password_hash = hash_password(&user.password)?;
 
     let user = sqlx::query_as::<_, User>(
-    "INSERT INTO users (id, email, password_hash, display_name, timezone) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, display_name, is_admin, timezone",
+    "INSERT INTO users (id, email, password_hash, display_name, timezone) VALUES ($1, $2, $3, $4, $5) RETURNING id, email, display_name, is_admin, timezone, password_hash",
   )
   .bind(id)
   .bind(user.email)
@@ -29,7 +31,8 @@ pub async fn create_user(pool: &PgPool, user: RegisterDto) -> Result<User, AppEr
   .bind(user.timezone)
   .fetch_one(pool)
   .await
-  .map_err(|_| {
+  .map_err(|e| {
+    error!("Failed to create user: {e:?}");
     AppError::new(
       "Internal server error".to_string(),
       StatusCode::INTERNAL_SERVER_ERROR,
@@ -41,7 +44,11 @@ pub async fn create_user(pool: &PgPool, user: RegisterDto) -> Result<User, AppEr
 
 /// Returns the plaintext token for the cookie.
 /// Only its sha256 goes to `sessions.token_hash`
-pub async fn create_session(pool: &PgPool, user_id: Id, ttl_days: u16) -> Result<String, AppError> {
+pub async fn create_session(
+    pool: &PgPool,
+    user_id: &Id,
+    ttl_days: u16,
+) -> Result<String, AppError> {
     let mut token_bytes = [0u8; 32];
     rand::rng().fill_bytes(&mut token_bytes);
     let token = hex_encode(&token_bytes);
@@ -129,6 +136,16 @@ pub async fn revoke_session(pool: &PgPool, token: &[u8]) -> Result<(), AppError>
 
     sqlx::query("DELETE FROM sessions WHERE token_hash = $1")
         .bind(token_hash.as_slice())
+        .execute(pool)
+        .await
+        .map_err(AppError::from)?;
+
+    Ok(())
+}
+
+pub async fn revoke_all_sessions(pool: &PgPool, user_id: Id) -> Result<(), AppError> {
+    sqlx::query("DELETE FROM sessions WHERE user_id = $1")
+        .bind(user_id)
         .execute(pool)
         .await
         .map_err(AppError::from)?;

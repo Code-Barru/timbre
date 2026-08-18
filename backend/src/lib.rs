@@ -5,6 +5,7 @@ mod error;
 pub mod extract;
 pub mod middleware;
 mod state;
+mod user;
 pub mod util;
 
 pub use app::app;
