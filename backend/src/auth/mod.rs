@@ -3,6 +3,7 @@ mod handlers;
 mod repository;
 mod service;
 
+pub(crate) use dto::validate_password_complexity;
 pub use handlers::get_router;
 use repository::user_exists;
 pub use repository::{

@@ -17,6 +17,7 @@ use axum::{
     routing::{delete, get, patch},
 };
 use axum_extra::extract::CookieJar;
+use validator::Validate;
 
 pub fn get_router() -> Router<AppState> {
     Router::new()
@@ -35,6 +36,7 @@ pub async fn patch_me(
     State(state): State<AppState>,
     AppJson(body): AppJson<PatchUserRequest>,
 ) -> Result<Data<User>, AppError> {
+    body.validate()?;
     let mut tx = state.rls_transaction(user.id).await?;
     let updated = update_user(&user.id, &body, &mut tx).await?;
     tx.commit().await?;
@@ -47,6 +49,7 @@ pub async fn change_password(
     jar: CookieJar,
     AppJson(body): AppJson<ChangePasswordRequest>,
 ) -> Result<(CookieJar, Data<()>), AppError> {
+    body.validate()?;
     if !verify_password(&body.old_password, &user.password_hash)? {
         return Err(AppError::new(
             "Invalid old password".to_string(),

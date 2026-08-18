@@ -20,7 +20,7 @@ pub struct RegisterRequest {
     pub timezone: String,
 }
 
-fn validate_password_complexity(password: &str) -> Result<(), ValidationError> {
+pub(crate) fn validate_password_complexity(password: &str) -> Result<(), ValidationError> {
     let has_lowercase = password.chars().any(|c| c.is_ascii_lowercase());
     let has_uppercase = password.chars().any(|c| c.is_ascii_uppercase());
     let has_digit = password.chars().any(|c| c.is_ascii_digit());
