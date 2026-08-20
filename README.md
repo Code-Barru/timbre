@@ -62,7 +62,7 @@ services:
     restart: unless-stopped
     environment:
       POSTGRES_USER: timbre
-      POSTGRES_PASSWORD: timbre
+      POSTGRES_PASSWORD: CHANGE_ME
       POSTGRES_DB: timbre
     volumes:
       - db-data:/var/lib/postgresql/data
