@@ -1,0 +1,20 @@
+[workspace]
+versioning = "zerover"
+tag_template = "v{version}"
+release_commit_mode = "commit"
+skip_ci = true
+update_lockfiles = true
+forge = "github"
+
+[[package]]
+name = "timbre"
+path = "."
+changelog = "CHANGELOG.md"
+
+[[package.versioned_files]]
+path = "backend/Cargo.toml"
+format = "toml"
+
+[[package.versioned_files]]
+path = "frontend/package.json"
+format = "json"
