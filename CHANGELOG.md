@@ -4,6 +4,12 @@ All notable changes to `timbre` will be documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.3.0] - 2026-08-21
+
+### Features
+
+- feat(database): changed defaults to english
+
 ## [0.2.1] - 2026-08-20
 
 ### Bug Fixes
