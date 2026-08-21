@@ -4,7 +4,7 @@
 CREATE TABLE note_types (
     id      text PRIMARY KEY,
     user_id text REFERENCES users ON DELETE CASCADE,   -- NULL = builtin, visible to all
-    key     text NOT NULL,                             -- 'ff_slowo', 'ff_zdanie', ...
+    key     text NOT NULL,                             -- 'ff_word', 'ff_sentence', ...
     name    text NOT NULL,
     -- {v:1, fields:[{key,label,kind,required}], templates:[{key,name,front,back,condition}]}
     spec    jsonb NOT NULL,
@@ -20,10 +20,10 @@ CREATE TABLE notes (
     user_id      text NOT NULL REFERENCES users ON DELETE CASCADE,
     note_type_id text NOT NULL REFERENCES note_types,
     deck_id      text NOT NULL REFERENCES decks,
-    -- {v:1, slowo, ipa, rodzaj, skojarzenie, osobiste, uwagi,
-    --  obraz:<media id>, audio:<media id>}
+    -- {v:1, word, ipa, gender, mnemonic, personal, notes,
+    --  image:<media id>, audio:<media id>}
     fields       jsonb NOT NULL,
-    -- 'grupa:aspekt-pisac', 'grupa:przypadek-loc', 'kontrast:s-sz'
+    -- 'group:verb-aspect', 'group:case-locative', 'contrast:s-sh'
     -- Feeds user_preferences.max_new_per_group_per_day.
     tags         text[] NOT NULL DEFAULT '{}',
 
@@ -51,9 +51,10 @@ CREATE UNIQUE INDEX notes_pack_key_idx
     ON notes (user_id, source_pack, source_key)
     WHERE source_pack IS NOT NULL;
 
--- Fuzzy search on the Polish word.
-CREATE INDEX notes_slowo_trgm_idx
-    ON notes USING gin ((fields ->> 'slowo') gin_trgm_ops);
+-- Fuzzy search on the primary lexical field of 'ff_word'.
+-- Other note types are searched through notes_fields_idx above.
+CREATE INDEX notes_word_trgm_idx
+    ON notes USING gin ((fields ->> 'word') gin_trgm_ops);
 
 CREATE TRIGGER notes_touch_rev
     BEFORE UPDATE ON notes

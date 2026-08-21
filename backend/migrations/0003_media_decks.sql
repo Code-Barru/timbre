@@ -10,7 +10,7 @@ CREATE TABLE media (
     byte_size   bigint NOT NULL CHECK (byte_size > 0),
     source_url  text,                   -- Forvo, Google Images, community pack
     -- Distinguishes own voice from Forvo pronunciation: while false,
-    -- Karta 3 (audio -> obraz) still needs replacing once phase 02 is done.
+    -- Card 3 (audio -> image) still needs replacing once phase 02 is done.
     is_own_recording boolean NOT NULL DEFAULT false,
     created_at  timestamptz NOT NULL DEFAULT now(),
     UNIQUE (user_id, sha256)            -- content dedup, per user
@@ -20,8 +20,8 @@ CREATE TABLE decks (
     id      text PRIMARY KEY,
     user_id text NOT NULL REFERENCES users ON DELETE CASCADE,
     name    text NOT NULL,
-    path    text NOT NULL,                     -- 'polski::wymowa' — prefix hierarchy
-    lang    text NOT NULL DEFAULT 'pl',
+    path    text NOT NULL,                     -- 'spanish::pronunciation' — prefix hierarchy
+    lang    text NOT NULL DEFAULT 'en',
     kind    text NOT NULL DEFAULT 'standard'
             CHECK (kind IN ('standard', 'pronunciation', 'catalog')),
     -- NULL = fully inherits user_preferences.
@@ -35,7 +35,7 @@ CREATE TABLE decks (
 
 CREATE INDEX decks_sync_idx ON decks (user_id, rev);
 CREATE INDEX decks_path_idx ON decks (user_id, path text_pattern_ops)
-    WHERE deleted_at IS NULL;                  -- subtrees via LIKE 'polski::%'
+    WHERE deleted_at IS NULL;                  -- subtrees via LIKE 'spanish::%'
 
 CREATE TRIGGER decks_touch_rev
     BEFORE UPDATE ON decks

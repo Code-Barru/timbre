@@ -7,7 +7,7 @@ CREATE TABLE users (
     password_hash text   NOT NULL,                        -- argon2id
     display_name  text   NOT NULL,
     is_admin      boolean NOT NULL DEFAULT false,
-    timezone      text   NOT NULL DEFAULT 'Europe/Paris',
+    timezone      text   NOT NULL DEFAULT 'UTC',
     settings      jsonb  NOT NULL DEFAULT '{"v": 1}',     -- day_cutoff_hour, misc flags
     created_at    timestamptz NOT NULL DEFAULT now(),
     CONSTRAINT users_settings_versioned CHECK (settings ? 'v')
