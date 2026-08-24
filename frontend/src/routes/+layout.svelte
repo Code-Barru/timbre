@@ -3,6 +3,7 @@
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { fetchMe } from '$lib/state/auth.svelte';
+	import ToastHost from '$lib/components/ui/feedback/ToastHost.svelte';
 
 	let { children } = $props();
 
@@ -12,6 +13,7 @@
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
-<div class="h-screen w-screen bg-slate-700 text-slate-200">
+<div class="min-h-screen w-full bg-surface-base text-fg">
 	{@render children()}
 </div>
+<ToastHost />
