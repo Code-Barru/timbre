@@ -4,6 +4,12 @@ All notable changes to `timbre` will be documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.4.0] - 2026-08-24
+
+### Features
+
+- feat(frontend): state and endpoint management
+
 ## [0.3.0] - 2026-08-21
 
 ### Features
