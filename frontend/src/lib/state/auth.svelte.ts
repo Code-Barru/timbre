@@ -1,7 +1,11 @@
+import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
+import type { PathnameWithSearchOrHash } from '$app/types';
 import { login as apiLogin, logout as apiLogout, register as apiRegister } from '$api/auth';
 import { ApiError } from '$api/errors';
 import type { LoginInput, RegisterInput } from '$api/schemas/auth';
 import type { ChangePasswordInput, PatchUserInput, User } from '$api/schemas/user';
+import { setUnauthorizedHandler } from '$api/unauthorized';
 import { changePassword as apiChangePassword, getMe, updateMe } from '$api/user';
 
 type Status = 'idle' | 'loading' | 'authenticated' | 'unauthenticated';
@@ -17,6 +21,19 @@ const _isAuthenticated = $derived(authState.status === 'authenticated');
 export function isAuthenticated() {
 	return _isAuthenticated;
 }
+
+export function safeRedirectTarget(raw: string | null) {
+	if (!raw || !raw.startsWith('/') || raw.startsWith('//')) return resolve('/');
+	return resolve(raw as PathnameWithSearchOrHash);
+}
+
+setUnauthorizedHandler(() => {
+	if (authState.status !== 'authenticated') return;
+	authState.user = null;
+	authState.status = 'unauthenticated';
+	const { pathname, search } = window.location;
+	goto(resolve(`/auth/login?redirectTo=${encodeURIComponent(pathname + search)}`));
+});
 
 export async function fetchMe() {
 	authState.status = 'loading';
@@ -65,6 +82,7 @@ export async function logout() {
 	} finally {
 		authState.user = null;
 		authState.status = 'unauthenticated';
+		await goto(resolve('/auth/login'));
 	}
 }
 

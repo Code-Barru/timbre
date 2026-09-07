@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { errorEnvelopeSchema, successEnvelope } from './envelope';
 import { ApiError } from './errors';
+import { notifyUnauthorized } from './unauthorized';
 
 type Method = 'GET' | 'POST' | 'PATCH' | 'DELETE';
 
@@ -33,6 +34,9 @@ export async function apiRequest<T>(opts: {
 	}
 
 	if (!res.ok) {
+		if (res.status === 401 && !opts.path.startsWith('/api/auth/')) {
+			notifyUnauthorized();
+		}
 		const parsed = errorEnvelopeSchema.safeParse(json);
 		if (!parsed.success) {
 			throw new ApiError('Error response did not match expected schema', res.status);
