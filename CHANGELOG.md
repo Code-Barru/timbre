@@ -4,6 +4,12 @@ All notable changes to `timbre` will be documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.6.0] - 2026-09-07
+
+### Features
+
+- feat(frontend): auth store + pages
+
 ## [0.5.0] - 2026-08-24
 
 ### Features
