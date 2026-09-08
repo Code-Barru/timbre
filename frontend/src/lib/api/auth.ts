@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { apiRequest } from './client';
+import { validationError } from './errors';
 import {
 	loginInputSchema,
 	registerInputSchema,
@@ -9,18 +10,25 @@ import {
 import { userSchema, type User } from './schemas/user';
 
 export function register(input: RegisterInput): Promise<User> {
-	const body = registerInputSchema.parse(input);
+	const parsed = registerInputSchema.safeParse(input);
+	if (!parsed.success) throw validationError(parsed.error);
 	return apiRequest({
 		method: 'POST',
 		path: '/api/auth/register',
-		body,
+		body: parsed.data,
 		responseSchema: userSchema
 	});
 }
 
 export function login(input: LoginInput): Promise<User> {
-	const body = loginInputSchema.parse(input);
-	return apiRequest({ method: 'POST', path: '/api/auth/login', body, responseSchema: userSchema });
+	const parsed = loginInputSchema.safeParse(input);
+	if (!parsed.success) throw validationError(parsed.error);
+	return apiRequest({
+		method: 'POST',
+		path: '/api/auth/login',
+		body: parsed.data,
+		responseSchema: userSchema
+	});
 }
 
 export function logout(): Promise<void> {
