@@ -41,7 +41,7 @@
 	}: Props = $props();
 
 	const base =
-		'relative inline-flex items-center justify-center font-medium whitespace-nowrap transition-colors transition-transform active:scale-95 duration-150 ease-out cursor-pointer disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50';
+		'relative inline-flex items-center justify-center font-medium whitespace-nowrap transition-colors transition-transform active:scale-95 duration-200 ease-out cursor-pointer disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50';
 
 	const variants: Record<Variant, Record<Tone, string>> = {
 		solid: {

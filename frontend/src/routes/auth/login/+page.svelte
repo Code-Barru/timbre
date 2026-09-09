@@ -40,11 +40,11 @@
 	}
 </script>
 
-<svelte:head><title>Sign in · Timbre</title></svelte:head>
+<svelte:head><title>Sign In · Timbre</title></svelte:head>
 
 <div class="flex flex-col gap-6">
 	<header class="flex flex-col gap-1">
-		<h1 class="text-xl font-semibold text-fg">Sign in</h1>
+		<h1 class="text-xl font-semibold text-fg">Sign In</h1>
 		<p class="text-sm text-fg-muted">Welcome back to Timbre.</p>
 	</header>
 
@@ -66,6 +66,6 @@
 
 	<p class="text-center text-sm text-fg-muted">
 		No account yet?
-		<Button href={resolve('/auth/register')} variant="link" size="sm">Create one</Button>
+		<Button href={resolve('/auth/register')} variant="link" size="sm">Sign Up</Button>
 	</p>
 </div>

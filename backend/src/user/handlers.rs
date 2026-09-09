@@ -1,13 +1,12 @@
-use crate::AppError;
-use crate::auth::{create_session, verify_password};
-use crate::middleware::auth::build_session_cookie;
-// PATCH /user/me
-// PATCH /user/me/password
 use super::{
-    ChangePasswordRequest, PatchUserRequest, delete_user, update_user, update_user_password,
+    ChangePasswordRequest, PatchPreferencesRequest, PatchUserRequest, UserPreferences, delete_user,
+    get_preferences, update_preferences, update_user, update_user_password,
 };
+use crate::AppError;
 use crate::auth::revoke_all_sessions;
+use crate::auth::{create_session, verify_password};
 use crate::extract::AppJson;
+use crate::middleware::auth::build_session_cookie;
 use crate::user::User;
 use crate::{AppState, Data};
 use axum::extract::State;
@@ -25,6 +24,8 @@ pub fn get_router() -> Router<AppState> {
         .route("/me", delete(delete_me))
         .route("/me", patch(patch_me))
         .route("/me/password", patch(change_password))
+        .route("/me/preferences", get(get_my_preferences))
+        .route("/me/preferences", patch(patch_my_preferences))
 }
 
 pub async fn get_me(user: User) -> Data<User> {
@@ -72,4 +73,26 @@ pub async fn delete_me(user: User, State(state): State<AppState>) -> Result<Data
     delete_user(&user.id, &mut tx).await?;
     tx.commit().await?;
     Ok(Data(()))
+}
+
+pub async fn get_my_preferences(
+    user: User,
+    State(state): State<AppState>,
+) -> Result<Data<UserPreferences>, AppError> {
+    let mut tx = state.rls_transaction(user.id).await?;
+    let preferences = get_preferences(&user.id, &mut tx).await?;
+    tx.commit().await?;
+    Ok(Data(preferences))
+}
+
+pub async fn patch_my_preferences(
+    user: User,
+    State(state): State<AppState>,
+    AppJson(body): AppJson<PatchPreferencesRequest>,
+) -> Result<Data<UserPreferences>, AppError> {
+    body.validate()?;
+    let mut tx = state.rls_transaction(user.id).await?;
+    let updated = update_preferences(&user.id, &body, &mut tx).await?;
+    tx.commit().await?;
+    Ok(Data(updated))
 }

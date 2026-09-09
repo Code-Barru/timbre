@@ -14,3 +14,17 @@ pub struct User {
     pub password_hash: String,
     pub timezone: String,
 }
+
+#[derive(Debug, Clone, Serialize, sqlx::FromRow)]
+#[serde(rename_all = "camelCase")]
+pub struct UserPreferences {
+    pub new_per_day: i32,
+    pub reviews_per_day: i32,
+    pub learning_steps_min: Vec<i32>,
+    pub relearning_steps_min: Vec<i32>,
+    pub max_interval_days: i32,
+    pub desired_retention: f64,
+    pub bury_siblings: bool,
+    pub max_new_per_group_per_day: i32,
+    pub ui: serde_json::Value,
+}

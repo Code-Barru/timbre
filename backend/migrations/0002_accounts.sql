@@ -4,13 +4,11 @@
 CREATE TABLE users (
     id            text PRIMARY KEY,
     email         citext UNIQUE NOT NULL,
-    password_hash text   NOT NULL,                        -- argon2id
+    password_hash text   NOT NULL,
     display_name  text   NOT NULL,
     is_admin      boolean NOT NULL DEFAULT false,
     timezone      text   NOT NULL DEFAULT 'UTC',
-    settings      jsonb  NOT NULL DEFAULT '{"v": 1}',     -- day_cutoff_hour, misc flags
-    created_at    timestamptz NOT NULL DEFAULT now(),
-    CONSTRAINT users_settings_versioned CHECK (settings ? 'v')
+    created_at    timestamptz NOT NULL DEFAULT now()
 );
 
 -- Default study settings. A deck may partially override them (decks.config).
@@ -21,7 +19,7 @@ CREATE TABLE user_preferences (
     learning_steps_min        integer[] NOT NULL DEFAULT '{1,10}',
     relearning_steps_min      integer[] NOT NULL DEFAULT '{10}',
     max_interval_days         integer  NOT NULL DEFAULT 36500 CHECK (max_interval_days > 0),
-    desired_retention         real     NOT NULL DEFAULT 0.90
+    desired_retention         double precision NOT NULL DEFAULT 0.90
                                        CHECK (desired_retention BETWEEN 0.70 AND 0.99),
     bury_siblings             boolean  NOT NULL DEFAULT true,
     -- Anti-interference guard (07): only one item per group

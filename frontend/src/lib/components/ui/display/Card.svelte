@@ -29,7 +29,7 @@
 	}: Props = $props();
 
 	const variants: Record<Variant, string> = {
-		raised: 'bg-surface-raised border border-line-subtle',
+		raised: 'bg-surface-raised border border-line-subtle shadow-sm shadow-lg',
 		outline: 'bg-transparent border border-line',
 		sunken: 'bg-surface-sunken border border-transparent'
 	};

@@ -43,7 +43,7 @@
 	}
 </script>
 
-<svelte:head><title>Create account · Timbre</title></svelte:head>
+<svelte:head><title>Sign Up · Timbre</title></svelte:head>
 
 <div class="flex flex-col gap-6">
 	<header class="flex flex-col gap-1">
@@ -78,6 +78,6 @@
 
 	<p class="text-center text-sm text-fg-muted">
 		Already have an account?
-		<Button href={resolve('/auth/login')} variant="link" size="sm">Sign in</Button>
+		<Button href={resolve('/auth/login')} variant="link" size="sm">Sign In</Button>
 	</p>
 </div>
