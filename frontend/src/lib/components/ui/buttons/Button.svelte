@@ -41,36 +41,51 @@
 	}: Props = $props();
 
 	const base =
-		'relative inline-flex items-center justify-center font-medium whitespace-nowrap transition-colors transition-transform active:scale-95 duration-200 ease-out cursor-pointer disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50';
+		'relative inline-flex items-center justify-center font-medium whitespace-nowrap transition-all duration-200 ease-out cursor-pointer disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50';
 
 	const variants: Record<Variant, Record<Tone, string>> = {
 		solid: {
-			brand: 'bg-brand-solid text-brand-on-solid hover:bg-brand-solid-hover',
-			neutral: 'bg-neutral-solid text-neutral-on-solid hover:bg-neutral-solid-hover',
-			danger: 'bg-danger-solid text-danger-on-solid hover:bg-danger-solid-hover',
-			warning: 'bg-warning-solid text-warning-on-solid hover:bg-warning-solid-hover',
-			success: 'bg-success-solid text-success-on-solid hover:bg-success-solid-hover'
+			brand:
+				'bg-brand-solid text-brand-on-solid hover:bg-brand-solid-hover active:bg-brand-solid-active',
+			neutral:
+				'bg-neutral-solid text-neutral-on-solid hover:bg-neutral-solid-hover active:bg-neutral-solid-active',
+			danger:
+				'bg-danger-solid text-danger-on-solid hover:bg-danger-solid-hover active:bg-danger-solid-active',
+			warning:
+				'bg-warning-solid text-warning-on-solid hover:bg-warning-solid-hover active:bg-warning-solid-active',
+			success:
+				'bg-success-solid text-success-on-solid hover:bg-success-solid-hover active:bg-success-solid-active'
 		},
 		soft: {
-			brand: 'bg-brand-subtle text-brand-fg hover:bg-brand-subtle-hover',
-			neutral: 'bg-neutral-subtle text-neutral-fg hover:bg-neutral-subtle-hover',
-			danger: 'bg-danger-subtle text-danger-fg hover:bg-danger-subtle-hover',
-			warning: 'bg-warning-subtle text-warning-fg hover:bg-warning-subtle-hover',
-			success: 'bg-success-subtle text-success-fg hover:bg-success-subtle-hover'
+			brand:
+				'bg-brand-subtle text-brand-fg hover:bg-brand-subtle-hover active:bg-brand-subtle-active',
+			neutral:
+				'bg-neutral-subtle text-neutral-fg hover:bg-neutral-subtle-hover active:bg-neutral-subtle-active',
+			danger:
+				'bg-danger-subtle text-danger-fg hover:bg-danger-subtle-hover active:bg-danger-subtle-active',
+			warning:
+				'bg-warning-subtle text-warning-fg hover:bg-warning-subtle-hover active:bg-warning-subtle-active',
+			success:
+				'bg-success-subtle text-success-fg hover:bg-success-subtle-hover active:bg-success-subtle-active'
 		},
 		outline: {
-			brand: 'border border-brand-line text-brand-fg hover:bg-brand-subtle',
-			neutral: 'border border-line text-fg-secondary hover:bg-neutral-subtle',
-			danger: 'border border-danger-line text-danger-fg hover:bg-danger-subtle',
-			warning: 'border border-warning-line text-warning-fg hover:bg-warning-subtle',
-			success: 'border border-success-line text-success-fg hover:bg-success-subtle'
+			brand:
+				'border border-brand-line text-brand-fg hover:bg-brand-subtle active:bg-brand-subtle-hover',
+			neutral:
+				'border border-line text-fg-secondary hover:bg-neutral-subtle active:bg-neutral-subtle-hover',
+			danger:
+				'border border-danger-line text-danger-fg hover:bg-danger-subtle active:bg-danger-subtle-hover',
+			warning:
+				'border border-warning-line text-warning-fg hover:bg-warning-subtle active:bg-warning-subtle-hover',
+			success:
+				'border border-success-line text-success-fg hover:bg-success-subtle active:bg-success-subtle-hover'
 		},
 		ghost: {
-			brand: 'text-brand-fg hover:bg-brand-subtle',
-			neutral: 'text-fg-secondary hover:bg-neutral-subtle',
-			danger: 'text-danger-fg hover:bg-danger-subtle',
-			warning: 'text-warning-fg hover:bg-warning-subtle',
-			success: 'text-success-fg hover:bg-success-subtle'
+			brand: 'text-brand-fg hover:bg-brand-subtle active:bg-brand-subtle-hover',
+			neutral: 'text-fg-secondary hover:bg-neutral-subtle active:bg-neutral-subtle-hover',
+			danger: 'text-danger-fg hover:bg-danger-subtle active:bg-danger-subtle-hover',
+			warning: 'text-warning-fg hover:bg-warning-subtle active:bg-warning-subtle-hover',
+			success: 'text-success-fg hover:bg-success-subtle active:bg-success-subtle-hover'
 		},
 		link: {
 			brand: 'text-brand-fg underline underline-offset-4 hover:decoration-2',

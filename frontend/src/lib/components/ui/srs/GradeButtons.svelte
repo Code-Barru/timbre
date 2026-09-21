@@ -26,25 +26,25 @@
 			grade: 1 as Grade,
 			label: 'Again',
 			key: '1',
-			tone: 'bg-danger-solid text-danger-on-solid hover:bg-danger-solid-hover'
+			tone: 'bg-danger-solid text-danger-on-solid hover:bg-danger-solid-hover active:bg-danger-solid-active'
 		},
 		{
 			grade: 2 as Grade,
 			label: 'Hard',
 			key: '2',
-			tone: 'bg-warning-solid text-warning-on-solid hover:bg-warning-solid-hover'
+			tone: 'bg-warning-solid text-warning-on-solid hover:bg-warning-solid-hover active:bg-warning-solid-active'
 		},
 		{
 			grade: 3 as Grade,
 			label: 'Good',
 			key: '3',
-			tone: 'bg-brand-solid text-brand-on-solid hover:bg-brand-solid-hover'
+			tone: 'bg-brand-solid text-brand-on-solid hover:bg-brand-solid-hover active:bg-brand-solid-active'
 		},
 		{
 			grade: 4 as Grade,
 			label: 'Easy',
 			key: '4',
-			tone: 'bg-success-solid text-success-on-solid hover:bg-success-solid-hover'
+			tone: 'bg-success-solid text-success-on-solid hover:bg-success-solid-hover active:bg-success-solid-active'
 		}
 	];
 

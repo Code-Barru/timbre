@@ -22,8 +22,10 @@
 	}: Props = $props();
 
 	const tones = {
-		neutral: 'text-fg hover:bg-neutral-subtle focus:bg-neutral-subtle',
-		danger: 'text-danger-fg hover:bg-danger-subtle focus:bg-danger-subtle'
+		neutral:
+			'text-fg hover:bg-neutral-subtle active:bg-neutral-subtle-hover focus:bg-neutral-subtle',
+		danger:
+			'text-danger-fg hover:bg-danger-subtle active:bg-danger-subtle-hover focus:bg-danger-subtle'
 	};
 </script>
 

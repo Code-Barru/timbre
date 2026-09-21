@@ -52,11 +52,16 @@
 	};
 
 	const idleTones: Record<Tone, string> = {
-		brand: 'border-line-subtle bg-transparent text-fg-secondary hover:bg-brand-subtle',
-		neutral: 'border-line-subtle bg-transparent text-fg-secondary hover:bg-neutral-subtle',
-		danger: 'border-line-subtle bg-transparent text-fg-secondary hover:bg-danger-subtle',
-		warning: 'border-line-subtle bg-transparent text-fg-secondary hover:bg-warning-subtle',
-		success: 'border-line-subtle bg-transparent text-fg-secondary hover:bg-success-subtle'
+		brand:
+			'border-line-subtle bg-transparent text-fg-secondary hover:bg-brand-subtle active:bg-brand-subtle-hover',
+		neutral:
+			'border-line-subtle bg-transparent text-fg-secondary hover:bg-neutral-subtle active:bg-neutral-subtle-hover',
+		danger:
+			'border-line-subtle bg-transparent text-fg-secondary hover:bg-danger-subtle active:bg-danger-subtle-hover',
+		warning:
+			'border-line-subtle bg-transparent text-fg-secondary hover:bg-warning-subtle active:bg-warning-subtle-hover',
+		success:
+			'border-line-subtle bg-transparent text-fg-secondary hover:bg-success-subtle active:bg-success-subtle-hover'
 	};
 
 	const sizes: Record<Size, string> = {

@@ -50,6 +50,12 @@
 		return items().indexOf(document.activeElement as HTMLElement);
 	}
 
+	function moveFocus(delta: number) {
+		const index = currentIndex();
+		if (index < 0) focusItem(delta > 0 ? 0 : items().length - 1);
+		else focusItem(index + delta);
+	}
+
 	function close(restoreFocus = true) {
 		open = false;
 		if (restoreFocus) anchor?.focus();
@@ -65,11 +71,11 @@
 		switch (event.key) {
 			case 'ArrowDown':
 				event.preventDefault();
-				focusItem(currentIndex() + 1);
+				moveFocus(1);
 				return;
 			case 'ArrowUp':
 				event.preventDefault();
-				focusItem(currentIndex() - 1);
+				moveFocus(-1);
 				return;
 			case 'Home':
 				event.preventDefault();
@@ -80,7 +86,8 @@
 				focusItem(items().length - 1);
 				return;
 			case 'Tab':
-				close(false);
+				event.preventDefault();
+				moveFocus(event.shiftKey ? -1 : 1);
 				return;
 		}
 
@@ -95,7 +102,7 @@
 	}
 
 	$effect(() => {
-		if (open) focusItem(0);
+		if (open) menu?.focus();
 	});
 
 	$effect(() => () => clearTimeout(typedTimer));
@@ -127,7 +134,7 @@
 		use:position={{ anchor, placement, align, offset: 6 }}
 		use:dismiss={{ ondismiss: close, anchor }}
 		class={[
-			'z-50 min-w-44 rounded-lg border border-line-subtle bg-surface-overlay p-1 shadow-overlay outline-none',
+			'z-50 min-w-44 rounded-sm border border-line-subtle bg-surface-overlay p-1 shadow-overlay outline-none',
 			klass
 		]}
 	>

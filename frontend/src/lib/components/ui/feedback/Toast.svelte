@@ -1,9 +1,9 @@
 <script lang="ts">
-	import CircleAlert from '@lucide/svelte/icons/circle-alert';
-	import CircleCheck from '@lucide/svelte/icons/circle-check';
-	import Info from '@lucide/svelte/icons/info';
-	import TriangleAlert from '@lucide/svelte/icons/triangle-alert';
-	import X from '@lucide/svelte/icons/x';
+	import CheckCircleIcon from 'phosphor-svelte/lib/CheckCircleIcon';
+	import InfoIcon from 'phosphor-svelte/lib/InfoIcon';
+	import WarningCircleIcon from 'phosphor-svelte/lib/WarningCircleIcon';
+	import WarningIcon from 'phosphor-svelte/lib/WarningIcon';
+	import XIcon from 'phosphor-svelte/lib/XIcon';
 	import type { Toast } from './toasts.svelte';
 
 	interface Props {
@@ -17,10 +17,10 @@
 	let { toast, dismissLabel = 'Dismiss', ondismiss, onpause, onresume }: Props = $props();
 
 	const icons = {
-		brand: Info,
-		danger: CircleAlert,
-		warning: TriangleAlert,
-		success: CircleCheck
+		brand: InfoIcon,
+		danger: WarningCircleIcon,
+		warning: WarningIcon,
+		success: CheckCircleIcon
 	};
 
 	const accents: Record<Toast['tone'], string> = {
@@ -54,6 +54,6 @@
 		onclick={ondismiss}
 		class="-m-1 shrink-0 rounded-xs p-1 text-fg-muted transition-colors duration-150 ease-out hover:text-fg"
 	>
-		<X class="size-4" aria-hidden="true" />
+		<XIcon class="size-4" aria-hidden="true" />
 	</button>
 </div>

@@ -52,7 +52,7 @@
 		aria-label="Previous page"
 		disabled={page <= 1}
 		onclick={() => go(page - 1)}
-		class="inline-flex size-8 items-center justify-center rounded-md text-fg-secondary transition-colors duration-150 ease-out hover:bg-neutral-subtle disabled:pointer-events-none disabled:opacity-40"
+		class="inline-flex size-8 items-center justify-center rounded-md text-fg-secondary transition-colors duration-150 ease-out hover:bg-neutral-subtle active:bg-neutral-subtle-hover disabled:pointer-events-none disabled:opacity-40"
 	>
 		<ChevronLeft class="size-4" aria-hidden="true" />
 	</button>
@@ -68,7 +68,7 @@
 					'inline-flex size-8 items-center justify-center rounded-md text-sm tabular-nums transition-colors duration-150 ease-out',
 					item === page
 						? 'bg-brand-solid font-semibold text-brand-on-solid'
-						: 'text-fg-secondary hover:bg-neutral-subtle'
+						: 'text-fg-secondary hover:bg-neutral-subtle active:bg-neutral-subtle-hover'
 				]}
 			>
 				{item}
@@ -80,7 +80,7 @@
 		aria-label="Next page"
 		disabled={page >= pageCount}
 		onclick={() => go(page + 1)}
-		class="inline-flex size-8 items-center justify-center rounded-md text-fg-secondary transition-colors duration-150 ease-out hover:bg-neutral-subtle disabled:pointer-events-none disabled:opacity-40"
+		class="inline-flex size-8 items-center justify-center rounded-md text-fg-secondary transition-colors duration-150 ease-out hover:bg-neutral-subtle active:bg-neutral-subtle-hover disabled:pointer-events-none disabled:opacity-40"
 	>
 		<ChevronRight class="size-4" aria-hidden="true" />
 	</button>

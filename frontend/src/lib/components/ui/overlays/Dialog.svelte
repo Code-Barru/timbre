@@ -74,7 +74,7 @@
 				type="button"
 				aria-label={closeLabel}
 				onclick={() => (open = false)}
-				class="-m-1 rounded-md p-1 text-fg-muted transition-colors duration-150 ease-out hover:bg-neutral-subtle hover:text-fg"
+				class="-m-1 rounded-md p-1 text-fg-muted transition-colors duration-150 ease-out hover:bg-neutral-subtle hover:text-fg active:bg-neutral-subtle-hover"
 			>
 				<X class="size-4.5" aria-hidden="true" />
 			</button>

@@ -82,7 +82,6 @@ export async function logout() {
 	} finally {
 		authState.user = null;
 		authState.status = 'unauthenticated';
-		await goto(resolve('/auth/login'));
 	}
 }
 

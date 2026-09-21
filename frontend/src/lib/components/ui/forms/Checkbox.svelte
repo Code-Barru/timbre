@@ -1,8 +1,8 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import Check from '@lucide/svelte/icons/check';
-	import Minus from '@lucide/svelte/icons/minus';
+	import CheckIcon from 'phosphor-svelte/lib/CheckIcon';
+	import MinusIcon from 'phosphor-svelte/lib/MinusIcon';
 	import { getFieldContext } from './field';
 
 	type Size = 'sm' | 'md';
@@ -67,9 +67,9 @@
 		{#if isOn}
 			<span class="pointer-events-none absolute inline-flex text-brand-on-solid">
 				{#if indeterminate}
-					<Minus class={icons[size]} aria-hidden="true" />
+					<MinusIcon weight="bold" class={icons[size]} aria-hidden="true" />
 				{:else}
-					<Check class={icons[size]} aria-hidden="true" />
+					<CheckIcon weight="bold" class={icons[size]} aria-hidden="true" />
 				{/if}
 			</span>
 		{/if}

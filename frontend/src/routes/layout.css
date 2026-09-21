@@ -131,41 +131,51 @@
 
 	--color-brand-solid: var(--brand-solid);
 	--color-brand-solid-hover: var(--brand-solid-hover);
+	--color-brand-solid-active: var(--brand-solid-active);
 	--color-brand-on-solid: var(--brand-on-solid);
 	--color-brand-subtle: var(--brand-subtle);
 	--color-brand-subtle-hover: var(--brand-subtle-hover);
+	--color-brand-subtle-active: var(--brand-subtle-active);
 	--color-brand-line: var(--brand-line);
 	--color-brand-fg: var(--brand-fg);
 
 	--color-neutral-solid: var(--neutral-solid);
 	--color-neutral-solid-hover: var(--neutral-solid-hover);
+	--color-neutral-solid-active: var(--neutral-solid-active);
 	--color-neutral-on-solid: var(--neutral-on-solid);
 	--color-neutral-subtle: var(--neutral-subtle);
 	--color-neutral-subtle-hover: var(--neutral-subtle-hover);
+	--color-neutral-subtle-active: var(--neutral-subtle-active);
 	--color-neutral-line: var(--neutral-line);
 	--color-neutral-fg: var(--neutral-fg);
 
 	--color-danger-solid: var(--danger-solid);
 	--color-danger-solid-hover: var(--danger-solid-hover);
+	--color-danger-solid-active: var(--danger-solid-active);
 	--color-danger-on-solid: var(--danger-on-solid);
 	--color-danger-subtle: var(--danger-subtle);
 	--color-danger-subtle-hover: var(--danger-subtle-hover);
+	--color-danger-subtle-active: var(--danger-subtle-active);
 	--color-danger-line: var(--danger-line);
 	--color-danger-fg: var(--danger-fg);
 
 	--color-warning-solid: var(--warning-solid);
 	--color-warning-solid-hover: var(--warning-solid-hover);
+	--color-warning-solid-active: var(--warning-solid-active);
 	--color-warning-on-solid: var(--warning-on-solid);
 	--color-warning-subtle: var(--warning-subtle);
 	--color-warning-subtle-hover: var(--warning-subtle-hover);
+	--color-warning-subtle-active: var(--warning-subtle-active);
 	--color-warning-line: var(--warning-line);
 	--color-warning-fg: var(--warning-fg);
 
 	--color-success-solid: var(--success-solid);
 	--color-success-solid-hover: var(--success-solid-hover);
+	--color-success-solid-active: var(--success-solid-active);
 	--color-success-on-solid: var(--success-on-solid);
 	--color-success-subtle: var(--success-subtle);
 	--color-success-subtle-hover: var(--success-subtle-hover);
+	--color-success-subtle-active: var(--success-subtle-active);
 	--color-success-line: var(--success-line);
 	--color-success-fg: var(--success-fg);
 
@@ -223,41 +233,51 @@
 
 	--brand-solid: light-dark(var(--color-brand-600), var(--color-brand-500));
 	--brand-solid-hover: light-dark(var(--color-brand-700), var(--color-brand-400));
+	--brand-solid-active: light-dark(var(--color-brand-800), var(--color-brand-300));
 	--brand-on-solid: light-dark(var(--color-neutral-0), var(--color-neutral-950));
-	--brand-subtle: light-dark(var(--color-brand-50), var(--color-brand-950));
-	--brand-subtle-hover: light-dark(var(--color-brand-100), var(--color-brand-900));
+	--brand-subtle: light-dark(var(--color-brand-100), var(--color-brand-800));
+	--brand-subtle-hover: light-dark(var(--color-brand-200), var(--color-brand-700));
+	--brand-subtle-active: light-dark(var(--color-brand-300), var(--color-brand-600));
 	--brand-line: light-dark(var(--color-brand-200), var(--color-brand-800));
 	--brand-fg: light-dark(var(--color-brand-700), var(--color-brand-300));
 
 	--neutral-solid: light-dark(var(--color-neutral-900), var(--color-neutral-700));
 	--neutral-solid-hover: light-dark(var(--color-neutral-800), var(--color-neutral-600));
+	--neutral-solid-active: light-dark(var(--color-neutral-700), var(--color-neutral-800));
 	--neutral-on-solid: light-dark(var(--color-neutral-0), var(--color-neutral-50));
 	--neutral-subtle: light-dark(var(--color-neutral-100), var(--color-neutral-800));
 	--neutral-subtle-hover: light-dark(var(--color-neutral-200), var(--color-neutral-700));
+	--neutral-subtle-active: light-dark(var(--color-neutral-300), var(--color-neutral-600));
 	--neutral-line: light-dark(var(--color-neutral-300), var(--color-neutral-700));
 	--neutral-fg: light-dark(var(--color-neutral-700), var(--color-neutral-300));
 
 	--danger-solid: light-dark(var(--color-danger-600), var(--color-danger-500));
 	--danger-solid-hover: light-dark(var(--color-danger-700), var(--color-danger-400));
+	--danger-solid-active: light-dark(var(--color-danger-800), var(--color-danger-300));
 	--danger-on-solid: light-dark(var(--color-neutral-0), var(--color-neutral-950));
 	--danger-subtle: light-dark(var(--color-danger-50), var(--color-danger-950));
 	--danger-subtle-hover: light-dark(var(--color-danger-100), var(--color-danger-900));
+	--danger-subtle-active: light-dark(var(--color-danger-200), var(--color-danger-800));
 	--danger-line: light-dark(var(--color-danger-200), var(--color-danger-800));
 	--danger-fg: light-dark(var(--color-danger-700), var(--color-danger-300));
 
 	--warning-solid: var(--color-warning-500);
 	--warning-solid-hover: light-dark(var(--color-warning-600), var(--color-warning-400));
+	--warning-solid-active: light-dark(var(--color-warning-700), var(--color-warning-300));
 	--warning-on-solid: light-dark(var(--color-neutral-900), var(--color-neutral-950));
 	--warning-subtle: light-dark(var(--color-warning-50), var(--color-warning-950));
 	--warning-subtle-hover: light-dark(var(--color-warning-100), var(--color-warning-900));
+	--warning-subtle-active: light-dark(var(--color-warning-200), var(--color-warning-800));
 	--warning-line: light-dark(var(--color-warning-200), var(--color-warning-800));
 	--warning-fg: light-dark(var(--color-warning-700), var(--color-warning-300));
 
 	--success-solid: var(--color-success-500);
 	--success-solid-hover: light-dark(var(--color-success-600), var(--color-success-400));
+	--success-solid-active: light-dark(var(--color-success-400), var(--color-success-300));
 	--success-on-solid: var(--color-neutral-950);
 	--success-subtle: light-dark(var(--color-success-50), var(--color-success-950));
 	--success-subtle-hover: light-dark(var(--color-success-100), var(--color-success-900));
+	--success-subtle-active: light-dark(var(--color-success-200), var(--color-success-800));
 	--success-line: light-dark(var(--color-success-200), var(--color-success-800));
 	--success-fg: light-dark(var(--color-success-700), var(--color-success-300));
 }
