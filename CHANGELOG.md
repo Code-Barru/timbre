@@ -4,6 +4,18 @@ All notable changes to `timbre` will be documented here.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.7.0] - 2026-09-22
+
+### Features
+
+- feat(frontend): preferences page
+- feat(backend): added swagger feature for development
+- feat(frontend): preferences endpoints
+
+### Bug Fixes
+
+- fix(frontend): ZodError now displays instead of defaulting to "Unknown Error"
+
 ## [0.6.0] - 2026-09-07
 
 ### Features
