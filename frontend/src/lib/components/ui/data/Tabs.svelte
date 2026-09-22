@@ -11,6 +11,7 @@
 		tabs: Tab[];
 		value?: string;
 		variant?: 'line' | 'solid';
+		orientation?: 'horizontal' | 'vertical';
 		label?: string;
 		children?: Snippet;
 		class?: string;
@@ -20,6 +21,7 @@
 		tabs,
 		value = $bindable(tabs[0]?.value ?? ''),
 		variant = 'line',
+		orientation = 'horizontal',
 		label,
 		children,
 		class: klass
@@ -40,10 +42,12 @@
 	function onKeydown(event: KeyboardEvent) {
 		const enabled = tabs.filter((tab) => !tab.disabled);
 		const index = enabled.findIndex((tab) => tab.value === value);
-		if (event.key === 'ArrowRight') {
+		const [prevKey, nextKey] =
+			orientation === 'vertical' ? ['ArrowUp', 'ArrowDown'] : ['ArrowLeft', 'ArrowRight'];
+		if (event.key === nextKey) {
 			event.preventDefault();
 			focusTab(index + 1);
-		} else if (event.key === 'ArrowLeft') {
+		} else if (event.key === prevKey) {
 			event.preventDefault();
 			focusTab(index - 1);
 		} else if (event.key === 'Home') {
@@ -56,16 +60,25 @@
 	}
 </script>
 
-<div class={['flex flex-col gap-4', klass]}>
+<div
+	class={[
+		orientation === 'vertical' ? 'flex flex-col gap-6 sm:flex-row' : 'flex flex-col gap-4',
+		klass
+	]}
+>
 	<div
 		bind:this={list}
 		role="tablist"
 		aria-label={label}
+		aria-orientation={orientation}
 		class={[
-			'flex items-center',
-			variant === 'line'
-				? 'gap-1 border-b border-line-subtle'
-				: 'gap-1 rounded-md bg-surface-sunken p-1'
+			'flex gap-1',
+			orientation === 'vertical' ? 'shrink-0 flex-col sm:w-48 sm:self-start' : 'items-center',
+			variant === 'solid'
+				? 'rounded-md bg-surface-sunken p-1'
+				: orientation === 'vertical'
+					? 'border-l border-line-subtle'
+					: 'border-b border-line-subtle'
 		]}
 	>
 		{#each tabs as tab (tab.value)}
@@ -81,11 +94,14 @@
 				onclick={() => (value = tab.value)}
 				onkeydown={onKeydown}
 				class={[
-					'px-3 py-2 text-sm font-medium transition-colors duration-150 ease-out disabled:pointer-events-none disabled:opacity-50',
+					'px-3 py-2 text-left text-sm font-medium transition duration-200 ease-out disabled:pointer-events-none disabled:opacity-50',
 					variant === 'line'
-						? value === tab.value
-							? '-mb-px border-b-2 border-brand-solid text-fg'
-							: '-mb-px border-b-2 border-transparent text-fg-muted hover:text-fg'
+						? [
+								orientation === 'vertical' ? '-ml-px border-l-2' : '-mb-px border-b-2',
+								value === tab.value
+									? 'border-brand-solid text-fg'
+									: 'border-transparent text-fg-muted hover:text-fg'
+							]
 						: value === tab.value
 							? 'rounded-sm bg-surface-raised text-fg shadow-popover'
 							: 'rounded-sm text-fg-muted hover:text-fg'
@@ -101,7 +117,7 @@
 			id="{id}-{value}-panel"
 			aria-labelledby="{id}-{value}-tab"
 			tabindex="0"
-			class="outline-none"
+			class={['outline-none', orientation === 'vertical' && 'min-w-0 flex-1']}
 		>
 			{@render children()}
 		</div>

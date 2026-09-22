@@ -6,7 +6,7 @@ import { ApiError } from '$api/errors';
 import type { LoginInput, RegisterInput } from '$api/schemas/auth';
 import type { ChangePasswordInput, PatchUserInput, User } from '$api/schemas/user';
 import { setUnauthorizedHandler } from '$api/unauthorized';
-import { changePassword as apiChangePassword, getMe, updateMe } from '$api/user';
+import { changePassword as apiChangePassword, deleteMe, getMe, updateMe } from '$api/user';
 
 type Status = 'idle' | 'loading' | 'authenticated' | 'unauthenticated';
 
@@ -92,4 +92,10 @@ export async function updateProfile(input: PatchUserInput) {
 
 export async function changePassword(input: ChangePasswordInput) {
 	await apiChangePassword(input);
+}
+
+export async function deleteAccount() {
+	await deleteMe();
+	authState.user = null;
+	authState.status = 'unauthenticated';
 }

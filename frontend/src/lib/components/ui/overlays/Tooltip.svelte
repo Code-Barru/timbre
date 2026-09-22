@@ -25,6 +25,7 @@
 
 	let anchor = $state<HTMLElement | null>(null);
 	let open = $state(false);
+	const target = $derived((anchor?.firstElementChild as HTMLElement | null) ?? null);
 	let timer: ReturnType<typeof setTimeout> | undefined;
 
 	function schedule(next: boolean, wait: number) {
@@ -51,7 +52,6 @@
 	}
 
 	$effect(() => {
-		const target = anchor?.firstElementChild;
 		if (!target) return;
 		if (open) target.setAttribute('aria-describedby', id);
 		else target.removeAttribute('aria-describedby');
@@ -77,7 +77,7 @@
 		{id}
 		role="tooltip"
 		transition:fade={{ duration: 100 }}
-		use:position={{ anchor, placement, offset: 8 }}
+		use:position={{ anchor: target, placement, offset: 8 }}
 		class={[
 			'pointer-events-none z-50 max-w-64 rounded-md bg-neutral-solid px-2 py-1 text-xs font-medium text-neutral-on-solid shadow-popover',
 			klass

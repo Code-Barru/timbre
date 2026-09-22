@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { apiRequest } from './client';
+import { validationError } from './errors';
 import {
 	changePasswordInputSchema,
 	patchUserInputSchema,
@@ -14,16 +15,23 @@ export function getMe(): Promise<User> {
 }
 
 export function updateMe(input: PatchUserInput): Promise<User> {
-	const body = patchUserInputSchema.parse(input);
-	return apiRequest({ method: 'PATCH', path: '/api/user/me', body, responseSchema: userSchema });
+	const parsed = patchUserInputSchema.safeParse(input);
+	if (!parsed.success) throw validationError(parsed.error);
+	return apiRequest({
+		method: 'PATCH',
+		path: '/api/user/me',
+		body: parsed.data,
+		responseSchema: userSchema
+	});
 }
 
 export async function changePassword(input: ChangePasswordInput): Promise<void> {
-	const body = changePasswordInputSchema.parse(input);
+	const parsed = changePasswordInputSchema.safeParse(input);
+	if (!parsed.success) throw validationError(parsed.error);
 	await apiRequest({
 		method: 'PATCH',
 		path: '/api/user/me/password',
-		body,
+		body: parsed.data,
 		responseSchema: z.null()
 	});
 }

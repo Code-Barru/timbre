@@ -1,10 +1,13 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import Info from '@lucide/svelte/icons/info';
+	import Tooltip from '../overlays/Tooltip.svelte';
 	import { setFieldContext } from './field';
 
 	interface Props {
 		label?: string;
 		hint?: string;
+		info?: string;
 		error?: string;
 		required?: boolean;
 		id?: string;
@@ -16,6 +19,7 @@
 	let {
 		label,
 		hint,
+		info,
 		error,
 		required = false,
 		id,
@@ -58,12 +62,25 @@
 	]}
 >
 	{#if label}
-		<label for={fieldId} class="text-sm font-medium text-fg">
-			{label}
-			{#if required}
-				<span class="text-danger-fg" aria-hidden="true">*</span>
+		<div class="flex items-center gap-1.5">
+			<label for={fieldId} class="text-sm font-medium text-fg">
+				{label}
+				{#if required}
+					<span class="text-danger-fg" aria-hidden="true">*</span>
+				{/if}
+			</label>
+			{#if info}
+				<Tooltip text={info} delay={0}>
+					<button
+						type="button"
+						aria-label="More info about {label}"
+						class="rounded-full text-fg-muted transition-colors duration-150 ease-out hover:text-fg"
+					>
+						<Info class="size-3.5" aria-hidden="true" />
+					</button>
+				</Tooltip>
 			{/if}
-		</label>
+		</div>
 	{/if}
 	<div class={orientation === 'horizontal' ? 'min-w-0 flex-1' : ''}>
 		{@render children?.()}

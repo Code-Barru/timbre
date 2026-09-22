@@ -1,4 +1,5 @@
 import { apiRequest } from './client';
+import { validationError } from './errors';
 import {
 	patchPreferencesInputSchema,
 	userPreferencesSchema,
@@ -15,11 +16,12 @@ export function getPreferences(): Promise<UserPreferences> {
 }
 
 export function updatePreferences(input: PatchPreferencesInput): Promise<UserPreferences> {
-	const body = patchPreferencesInputSchema.parse(input);
+	const parsed = patchPreferencesInputSchema.safeParse(input);
+	if (!parsed.success) throw validationError(parsed.error);
 	return apiRequest({
 		method: 'PATCH',
 		path: '/api/user/me/preferences',
-		body,
+		body: parsed.data,
 		responseSchema: userPreferencesSchema
 	});
 }

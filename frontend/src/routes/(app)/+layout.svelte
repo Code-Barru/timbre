@@ -1,14 +1,13 @@
 <script lang="ts">
 	import GearIcon from 'phosphor-svelte/lib/GearIcon';
 	import HouseIcon from 'phosphor-svelte/lib/HouseIcon';
-	import PenIcon from 'phosphor-svelte/lib/PenIcon';
 	import SignOutIcon from 'phosphor-svelte/lib/SignOutIcon';
 
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
-	import { Avatar, DropdownMenu, MenuItem, Sidebar, type NavSection } from '$lib/components/ui';
+	import { DropdownMenu, MenuItem, Sidebar, type NavSection } from '$lib/components/ui';
 	import { authState, logout } from '$lib/state/auth.svelte';
-	import { CardholderIcon, CaretUpDownIcon } from 'phosphor-svelte';
+	import { CardholderIcon, CaretUpDownIcon, UserIcon } from 'phosphor-svelte';
 
 	let { children } = $props();
 
@@ -16,7 +15,6 @@
 		{
 			items: [
 				{ label: 'Home', icon: HouseIcon, path: '/' },
-				{ label: 'Design', icon: PenIcon, path: '/design' },
 				{ label: 'Decks', icon: CardholderIcon, path: '/decks' }
 			]
 		}
@@ -37,7 +35,7 @@
 		triggerClass="flex w-full items-center gap-2.5 rounded-sm px-2 py-1.5 my-2 text-sm text-fg-secondary transition-colors duration-150 ease-out hover:bg-neutral-subtle active:bg-neutral-subtle-hover hover:text-fg"
 	>
 		{#snippet trigger()}
-			<Avatar size="sm" name={authState.user?.displayName ?? ''} />
+			<UserIcon size={16} class="shrink-0" />
 			<span class="flex-1 truncate text-left">{authState.user?.displayName}</span>
 			<CaretUpDownIcon size={16} />
 		{/snippet}
