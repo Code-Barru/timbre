@@ -14,8 +14,6 @@ need_stdout = false
 command = ["cargo", "clippy", "--all-targets"]
 need_stdout = false
 
-# Mêmes flags que le hook `cargo-clippy` de prek.toml : ce qui est rouge ici
-# est exactement ce qui bloquerait un commit.
 [jobs.pedantic]
 command = [
     "cargo", "clippy", "--all-targets",
@@ -27,11 +25,8 @@ need_stdout = false
 command = ["cargo", "test"]
 need_stdout = true
 
-# Build & run le serveur. Il ne s'arrête jamais tout seul, donc `background`
-# est à false (la sortie est affichée en direct au lieu d'attendre la fin du
-# process) et le process est tué puis relancé à chaque changement.
 [jobs.run]
-command = ["cargo", "run"]
+command = ["cargo", "run", "--features", "swagger"]
 need_stdout = true
 allow_warnings = true
 background = false

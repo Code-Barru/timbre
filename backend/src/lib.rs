@@ -4,6 +4,7 @@ mod config;
 mod error;
 pub mod extract;
 pub mod middleware;
+mod openapi;
 mod state;
 mod user;
 pub mod util;

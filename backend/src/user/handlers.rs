@@ -7,6 +7,7 @@ use crate::auth::revoke_all_sessions;
 use crate::auth::{create_session, verify_password};
 use crate::extract::AppJson;
 use crate::middleware::auth::build_session_cookie;
+use crate::openapi::{ApiEmptyResponse, ApiError, ApiResponse};
 use crate::user::User;
 use crate::{AppState, Data};
 use axum::extract::State;
@@ -28,10 +29,30 @@ pub fn get_router() -> Router<AppState> {
         .route("/me/preferences", patch(patch_my_preferences))
 }
 
+#[utoipa::path(
+    get,
+    path = "/api/user/me",
+    tag = "user",
+    responses(
+        (status = 200, body = ApiResponse<User>),
+        (status = 401, body = ApiError),
+    ),
+)]
 pub async fn get_me(user: User) -> Data<User> {
     Data(user)
 }
 
+#[utoipa::path(
+    patch,
+    path = "/api/user/me",
+    tag = "user",
+    request_body = PatchUserRequest,
+    responses(
+        (status = 200, body = ApiResponse<User>),
+        (status = 400, body = ApiError),
+        (status = 401, body = ApiError),
+    ),
+)]
 pub async fn patch_me(
     user: User,
     State(state): State<AppState>,
@@ -44,6 +65,17 @@ pub async fn patch_me(
     Ok(Data(updated))
 }
 
+#[utoipa::path(
+    patch,
+    path = "/api/user/me/password",
+    tag = "user",
+    request_body = ChangePasswordRequest,
+    responses(
+        (status = 200, description = "Password changed, other sessions revoked, new session cookie set", body = ApiEmptyResponse),
+        (status = 400, body = ApiError),
+        (status = 401, body = ApiError),
+    ),
+)]
 pub async fn change_password(
     State(state): State<AppState>,
     user: User,
@@ -68,6 +100,15 @@ pub async fn change_password(
     Ok((jar.add(cookie), Data(())))
 }
 
+#[utoipa::path(
+    delete,
+    path = "/api/user/me",
+    tag = "user",
+    responses(
+        (status = 200, body = ApiEmptyResponse),
+        (status = 401, body = ApiError),
+    ),
+)]
 pub async fn delete_me(user: User, State(state): State<AppState>) -> Result<Data<()>, AppError> {
     let mut tx = state.rls_transaction(user.id).await?;
     delete_user(&user.id, &mut tx).await?;
@@ -75,6 +116,15 @@ pub async fn delete_me(user: User, State(state): State<AppState>) -> Result<Data
     Ok(Data(()))
 }
 
+#[utoipa::path(
+    get,
+    path = "/api/user/me/preferences",
+    tag = "user",
+    responses(
+        (status = 200, body = ApiResponse<UserPreferences>),
+        (status = 401, body = ApiError),
+    ),
+)]
 pub async fn get_my_preferences(
     user: User,
     State(state): State<AppState>,
@@ -85,6 +135,17 @@ pub async fn get_my_preferences(
     Ok(Data(preferences))
 }
 
+#[utoipa::path(
+    patch,
+    path = "/api/user/me/preferences",
+    tag = "user",
+    request_body = PatchPreferencesRequest,
+    responses(
+        (status = 200, body = ApiResponse<UserPreferences>),
+        (status = 400, body = ApiError),
+        (status = 401, body = ApiError),
+    ),
+)]
 pub async fn patch_my_preferences(
     user: User,
     State(state): State<AppState>,

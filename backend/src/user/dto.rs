@@ -1,9 +1,10 @@
 use serde::Deserialize;
+use utoipa::ToSchema;
 use validator::{Validate, ValidationError};
 
 use crate::auth::validate_password_complexity;
 
-#[derive(Debug, Clone, Deserialize, Validate)]
+#[derive(Debug, Clone, Deserialize, Validate, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PatchUserRequest {
     #[validate(email)]
@@ -13,7 +14,7 @@ pub struct PatchUserRequest {
     pub timezone: Option<String>,
 }
 
-#[derive(Debug, Clone, Deserialize, Validate)]
+#[derive(Debug, Clone, Deserialize, Validate, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct ChangePasswordRequest {
     pub old_password: String,
@@ -28,7 +29,7 @@ pub struct ChangePasswordRequest {
     pub new_password: String,
 }
 
-#[derive(Debug, Clone, Deserialize, Validate)]
+#[derive(Debug, Clone, Deserialize, Validate, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct PatchPreferencesRequest {
     #[validate(range(min = 0))]
@@ -46,6 +47,7 @@ pub struct PatchPreferencesRequest {
     pub bury_siblings: Option<bool>,
     #[validate(range(min = 0))]
     pub max_new_per_group_per_day: Option<i32>,
+    #[schema(value_type = Option<Object>)]
     pub ui: Option<serde_json::Value>,
 }
 

@@ -1,7 +1,8 @@
 use serde::Deserialize;
+use utoipa::ToSchema;
 use validator::{Validate, ValidationError};
 
-#[derive(Debug, Deserialize, Validate)]
+#[derive(Debug, Deserialize, Validate, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct RegisterRequest {
     #[validate(email)]
@@ -35,7 +36,7 @@ pub(crate) fn validate_password_complexity(password: &str) -> Result<(), Validat
     }
 }
 
-#[derive(Debug, Deserialize, Validate)]
+#[derive(Debug, Deserialize, Validate, ToSchema)]
 pub struct LoginRequest {
     #[validate(email)]
     pub email: String,

@@ -3,7 +3,7 @@ use sqlx::PgPool;
 use tower_http::trace::{self, TraceLayer};
 use tracing::Level;
 
-use crate::{AppError, AppResult, AppState, Data};
+use crate::{AppError, AppResult, AppState, Data, openapi::ApiError, openapi::ApiResponse};
 
 pub fn app(state: AppState) -> Router {
     let api = Router::new()
@@ -22,6 +22,9 @@ pub fn app(state: AppState) -> Router {
         router.fallback_service(serve_dir)
     };
 
+    #[cfg(all(debug_assertions, feature = "swagger"))]
+    let router = router.merge(crate::openapi::swagger_router());
+
     router
         .layer(
             TraceLayer::new_for_http()
@@ -35,7 +38,17 @@ async fn api_not_found() -> StatusCode {
     StatusCode::NOT_FOUND
 }
 
-async fn health_db(State(pool): State<PgPool>) -> AppResult<&'static str> {
+#[utoipa::path(
+    get,
+    path = "/api/health",
+    tag = "health",
+    security(()),
+    responses(
+        (status = 200, body = ApiResponse<String>),
+        (status = 500, body = ApiError),
+    ),
+)]
+pub(crate) async fn health_db(State(pool): State<PgPool>) -> AppResult<&'static str> {
     match sqlx::query("SELECT 1").execute(&pool).await {
         Ok(_) => Ok(Data("Up and healthy!")),
         Err(err) => Err(AppError::new(

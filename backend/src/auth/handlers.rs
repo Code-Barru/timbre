@@ -14,6 +14,7 @@ use crate::{
     },
     extract::AppJson,
     middleware::auth::{SESSION_COOKIE, build_session_cookie},
+    openapi::{ApiError, ApiResponse},
     user::User,
 };
 
@@ -24,6 +25,19 @@ pub fn get_router() -> Router<AppState> {
         .route("/logout", post(logout))
 }
 
+#[utoipa::path(
+    post,
+    path = "/api/auth/register",
+    tag = "auth",
+    request_body = RegisterRequest,
+    security(()),
+    responses(
+        (status = 201, description = "User created, session cookie set", body = ApiResponse<User>),
+        (status = 400, body = ApiError),
+        (status = 403, description = "Registration disabled", body = ApiError),
+        (status = 409, description = "Email already exists", body = ApiError),
+    ),
+)]
 pub async fn register(
     State(pool): State<PgPool>,
     State(config): State<Arc<Config>>,
@@ -54,6 +68,18 @@ pub async fn register(
     ))
 }
 
+#[utoipa::path(
+    post,
+    path = "/api/auth/login",
+    tag = "auth",
+    request_body = LoginRequest,
+    security(()),
+    responses(
+        (status = 200, description = "Session cookie set", body = ApiResponse<User>),
+        (status = 400, body = ApiError),
+        (status = 401, description = "Invalid email or password", body = ApiError),
+    ),
+)]
 pub async fn login(
     State(pool): State<PgPool>,
     State(config): State<Arc<Config>>,
@@ -82,6 +108,13 @@ pub async fn login(
     Ok((jar.add(cookie), Data(user)))
 }
 
+#[utoipa::path(
+    post,
+    path = "/api/auth/logout",
+    tag = "auth",
+    security(()),
+    responses((status = 204, description = "Session revoked, cookie removed")),
+)]
 pub async fn logout(
     State(pool): State<PgPool>,
     jar: CookieJar,

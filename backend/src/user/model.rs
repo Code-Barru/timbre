@@ -1,8 +1,9 @@
 use serde::Serialize;
+use utoipa::ToSchema;
 
 use crate::util::Id;
 
-#[derive(Debug, Clone, Serialize, sqlx::FromRow)]
+#[derive(Debug, Clone, Serialize, sqlx::FromRow, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct User {
     #[serde(skip)]
@@ -15,7 +16,7 @@ pub struct User {
     pub timezone: String,
 }
 
-#[derive(Debug, Clone, Serialize, sqlx::FromRow)]
+#[derive(Debug, Clone, Serialize, sqlx::FromRow, ToSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct UserPreferences {
     pub new_per_day: i32,
@@ -26,5 +27,6 @@ pub struct UserPreferences {
     pub desired_retention: f64,
     pub bury_siblings: bool,
     pub max_new_per_group_per_day: i32,
+    #[schema(value_type = Object)]
     pub ui: serde_json::Value,
 }

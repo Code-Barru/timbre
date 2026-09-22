@@ -1,5 +1,5 @@
 mod dto;
-mod handlers;
+pub(crate) mod handlers;
 mod repository;
 mod service;
 
